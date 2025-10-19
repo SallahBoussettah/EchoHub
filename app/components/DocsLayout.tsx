@@ -262,19 +262,18 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
         <div className="flex-1 flex flex-col min-w-0">
           {/* Mobile header */}
           <header className="lg:hidden flex h-16 items-center justify-between px-6 border-b border-[var(--color-line)] bg-[var(--color-bg)]">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="p-2 rounded-lg hover:bg-[var(--color-surface)] transition-colors"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
             <Link
               href="/docs"
               className="text-lg font-semibold text-[var(--color-ink)]"
             >
               Documentation
             </Link>
-            <div className="w-9" /> {/* Spacer */}
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 rounded-lg hover:bg-[var(--color-surface)] transition-colors"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
           </header>
 
           {/* Content area */}

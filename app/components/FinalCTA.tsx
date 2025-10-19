@@ -2,9 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "@/app/lib/gsapClient";
 import { prefersReducedMotion } from "@/app/lib/motionPrefs";
+import { X } from "lucide-react";
 
 export default function FinalCTA() {
   const [visible, setVisible] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function FinalCTA() {
     }
   }, [visible]);
 
-  if (!visible) return null;
+  if (!visible || dismissed) return null;
 
   return (
     <div ref={barRef} className="fixed bottom-0 left-0 right-0 z-50">
@@ -49,12 +51,21 @@ export default function FinalCTA() {
               Start free. No credit card required.
             </p>
           </div>
-          <a
-            href="#signup"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-[var(--r-md)] bg-[var(--color-accent)] text-[var(--color-bg)] font-medium transition-all duration-200 hover:shadow-[var(--shadow-200)] hover:-translate-y-0.5 hover:bg-[var(--color-accent-bright)]"
-          >
-            Get started
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href="#signup"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-[var(--r-md)] bg-[var(--color-accent)] text-[var(--color-bg)] font-medium transition-all duration-200 hover:shadow-[var(--shadow-200)] hover:-translate-y-0.5 hover:bg-[var(--color-accent-bright)]"
+            >
+              Get started
+            </a>
+            <button
+              onClick={() => setDismissed(true)}
+              className="p-2 rounded-lg hover:bg-[var(--color-muted)] transition-colors"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5 text-[var(--color-muted-ink)]" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
