@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import DashboardLayout from "../../components/DashboardLayout";
 import { searchApi } from "../../lib/api";
@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialQuery = searchParams.get("q") || "";
@@ -341,5 +341,24 @@ export default function SearchPage() {
         )}
       </div>
     </DashboardLayout>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense
+      fallback={
+        <DashboardLayout>
+          <div className="p-8 flex items-center justify-center min-h-screen">
+            <div className="text-center">
+              <div className="w-16 h-16 border-4 border-[var(--color-accent)] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-[var(--color-muted-ink)]">Loading search...</p>
+            </div>
+          </div>
+        </DashboardLayout>
+      }
+    >
+      <SearchContent />
+    </Suspense>
   );
 }
