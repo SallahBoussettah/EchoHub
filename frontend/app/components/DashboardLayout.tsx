@@ -3,6 +3,8 @@ import { useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
 import Sidebar from "./Sidebar";
+import MobileNav from "./MobileNav";
+import MobileHeader from "./MobileHeader";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -35,8 +37,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
+      {/* Desktop Sidebar */}
       <Sidebar />
-      <main className="ml-64 transition-all duration-300">{children}</main>
+
+      {/* Mobile Header */}
+      <MobileHeader />
+
+      {/* Main Content */}
+      <main className="lg:ml-64 pt-16 lg:pt-0 pb-20 lg:pb-0 transition-all duration-300">
+        {children}
+      </main>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileNav />
     </div>
   );
 }

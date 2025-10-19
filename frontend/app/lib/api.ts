@@ -221,8 +221,26 @@ export const notesApi = {
   },
 };
 
-// Files API (placeholder for now - will implement upload later)
+// Files API
 export const filesApi = {
+  upload: async (file: File, clientId?: string, projectId?: string) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    let url = "/files/upload";
+    const params = new URLSearchParams();
+    if (clientId) params.append("clientId", clientId);
+    if (projectId) params.append("projectId", projectId);
+    if (params.toString()) url += `?${params.toString()}`;
+
+    const response = await api.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  },
+
   getByClient: async (clientId: string) => {
     const response = await api.get(`/files/client/${clientId}`);
     return response.data;
@@ -231,6 +249,13 @@ export const filesApi = {
   getByProject: async (projectId: string) => {
     const response = await api.get(`/files/project/${projectId}`);
     return response.data;
+  },
+
+  download: async (id: string) => {
+    const response = await api.get(`/files/download/${id}`, {
+      responseType: "blob",
+    });
+    return response;
   },
 
   delete: async (id: string) => {

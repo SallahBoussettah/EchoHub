@@ -98,85 +98,89 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-8">
+      <div className="p-4 md:p-6 lg:p-8">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6 md:mb-8">
           <h1
-            className="text-4xl font-black text-[var(--color-ink)] mb-2"
+            className="text-3xl md:text-4xl font-black text-[var(--color-ink)] mb-2"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Dashboard
           </h1>
-          <p className="text-lg text-[var(--color-muted-ink)]">
+          <p className="text-base md:text-lg text-[var(--color-muted-ink)]">
             Welcome back! Here's what's happening.
           </p>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6 mb-6 md:mb-8">
           <Link
             href="/dashboard/clients"
-            className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 hover:shadow-lg transition-all group"
+            className="rounded-xl md:rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-4 md:p-6 hover:shadow-lg transition-all group active:scale-95"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                <Users className="w-6 h-6 text-blue-600" />
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-blue-500/10 flex items-center justify-center">
+                <Users className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
               </div>
-              <TrendingUp className="w-5 h-5 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity hidden md:block" />
             </div>
-            <h3 className="text-3xl font-black text-[var(--color-ink)] mb-1">
+            <h3 className="text-2xl md:text-3xl font-black text-[var(--color-ink)] mb-1">
               {loading ? "..." : stats.totalClients}
             </h3>
-            <p className="text-sm text-[var(--color-muted-ink)]">
+            <p className="text-xs md:text-sm text-[var(--color-muted-ink)]">
               Total Clients
             </p>
           </Link>
 
-          <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
-                <FolderKanban className="w-6 h-6 text-green-600" />
+          <div className="rounded-xl md:rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-4 md:p-6 hover:shadow-lg transition-shadow active:scale-95">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-green-500/10 flex items-center justify-center">
+                <FolderKanban className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
               </div>
-              <TrendingUp className="w-5 h-5 text-green-600" />
+              <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-green-600 hidden md:block" />
             </div>
-            <h3 className="text-3xl font-black text-[var(--color-ink)] mb-1">
+            <h3 className="text-2xl md:text-3xl font-black text-[var(--color-ink)] mb-1">
               {loading ? "..." : stats.activeProjects}
             </h3>
-            <p className="text-sm text-[var(--color-muted-ink)]">
+            <p className="text-xs md:text-sm text-[var(--color-muted-ink)]">
               Active Projects
             </p>
           </div>
 
-          <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                <CheckCircle2 className="w-6 h-6 text-purple-600" />
+          <div className="rounded-xl md:rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-4 md:p-6 hover:shadow-lg transition-shadow active:scale-95">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-purple-500/10 flex items-center justify-center">
+                <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
               </div>
-              <CheckCircle2 className="w-5 h-5 text-purple-600" />
+              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-purple-600 hidden md:block" />
             </div>
-            <h3 className="text-3xl font-black text-[var(--color-ink)] mb-1">
+            <h3 className="text-2xl md:text-3xl font-black text-[var(--color-ink)] mb-1">
               {loading ? "..." : stats.completedProjects}
             </h3>
-            <p className="text-sm text-[var(--color-muted-ink)]">Completed</p>
+            <p className="text-xs md:text-sm text-[var(--color-muted-ink)]">
+              Completed
+            </p>
           </div>
 
-          <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
-                <AlertCircle className="w-6 h-6 text-red-600" />
+          <div className="rounded-xl md:rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-4 md:p-6 hover:shadow-lg transition-shadow active:scale-95">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-red-500/10 flex items-center justify-center">
+                <AlertCircle className="w-5 h-5 md:w-6 md:h-6 text-red-600" />
               </div>
-              <AlertCircle className="w-5 h-5 text-red-600" />
+              <AlertCircle className="w-4 h-4 md:w-5 md:h-5 text-red-600 hidden md:block" />
             </div>
-            <h3 className="text-3xl font-black text-[var(--color-ink)] mb-1">
+            <h3 className="text-2xl md:text-3xl font-black text-[var(--color-ink)] mb-1">
               {loading ? "..." : stats.overdueProjects}
             </h3>
-            <p className="text-sm text-[var(--color-muted-ink)]">Overdue</p>
+            <p className="text-xs md:text-sm text-[var(--color-muted-ink)]">
+              Overdue
+            </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
           {/* Upcoming Deadlines */}
-          <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6">
+          <div className="rounded-xl md:rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-4 md:p-6">
             <div className="flex items-center gap-3 mb-6">
               <Calendar className="w-5 h-5 text-[var(--color-accent)]" />
               <h2 className="text-xl font-bold text-[var(--color-ink)]">
@@ -232,7 +236,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Recent Projects */}
-          <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6">
+          <div className="rounded-xl md:rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-4 md:p-6">
             <div className="flex items-center gap-3 mb-6">
               <FolderKanban className="w-5 h-5 text-[var(--color-accent)]" />
               <h2 className="text-xl font-bold text-[var(--color-ink)]">
@@ -282,7 +286,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Recent Clients */}
-        <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6">
+        <div className="rounded-xl md:rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-4 md:p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Users className="w-5 h-5 text-[var(--color-accent)]" />

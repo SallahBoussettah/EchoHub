@@ -87,7 +87,7 @@ export default function ClientsPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-8">
+      <div className="p-4 md:p-6 lg:p-8">
         {/* Toast Notifications */}
         {toasts.map((toast) => (
           <Toast
@@ -112,21 +112,21 @@ export default function ClientsPage() {
         )}
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
           <div>
             <h1
-              className="text-4xl font-black text-[var(--color-ink)] mb-2"
+              className="text-3xl md:text-4xl font-black text-[var(--color-ink)] mb-2"
               style={{ fontFamily: "var(--font-display)" }}
             >
               Clients
             </h1>
-            <p className="text-lg text-[var(--color-muted-ink)]">
+            <p className="text-base md:text-lg text-[var(--color-muted-ink)]">
               Manage your client relationships
             </p>
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all shadow-lg"
+            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all shadow-lg active:scale-95 w-full sm:w-auto"
           >
             <Plus className="w-5 h-5" />
             <span>Add Client</span>
@@ -134,7 +134,7 @@ export default function ClientsPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4 mb-6">
           <div className="flex-1 relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-muted-ink)]" />
             <input
@@ -163,29 +163,29 @@ export default function ClientsPage() {
             <p className="text-[var(--color-muted-ink)]">Loading clients...</p>
           </div>
         ) : clients.length === 0 ? (
-          <div className="text-center py-12 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)]">
-            <Users className="w-16 h-16 text-[var(--color-muted-ink)] mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-[var(--color-ink)] mb-2">
+          <div className="text-center py-12 rounded-xl md:rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)]">
+            <Users className="w-12 h-12 md:w-16 md:h-16 text-[var(--color-muted-ink)] mx-auto mb-4" />
+            <h3 className="text-lg md:text-xl font-bold text-[var(--color-ink)] mb-2">
               No clients yet
             </h3>
-            <p className="text-[var(--color-muted-ink)] mb-6">
+            <p className="text-sm md:text-base text-[var(--color-muted-ink)] mb-6">
               Get started by adding your first client
             </p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all active:scale-95"
             >
               <Plus className="w-5 h-5" />
               <span>Add Your First Client</span>
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {clients.map((client) => (
               <Link
                 key={client.id}
                 href={`/dashboard/clients/${client.id}`}
-                className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 hover:shadow-lg transition-all cursor-pointer group block"
+                className="rounded-xl md:rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-4 md:p-6 hover:shadow-lg transition-all cursor-pointer group block active:scale-95"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-bright)] flex items-center justify-center">

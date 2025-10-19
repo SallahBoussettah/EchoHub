@@ -43,7 +43,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`fixed left-0 top-0 h-screen bg-[var(--color-surface)] border-r border-[var(--color-line)] transition-all duration-300 z-40 ${
+      className={`hidden lg:fixed lg:block left-0 top-0 h-screen bg-[var(--color-surface)] border-r border-[var(--color-line)] transition-all duration-300 z-40 ${
         collapsed ? "w-20" : "w-64"
       }`}
     >
@@ -110,3 +110,5 @@ export default function Sidebar() {
     </aside>
   );
 }
+
+export { navigation };

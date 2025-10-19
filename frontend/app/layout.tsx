@@ -25,6 +25,19 @@ export const metadata: Metadata = {
     description: "One calm place for all your client chaos.",
     type: "website",
   },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
+  themeColor: "#6366f1",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "EchoHub",
+  },
+  manifest: "/manifest.json",
 };
 
 import { AuthProvider } from "./contexts/AuthContext";

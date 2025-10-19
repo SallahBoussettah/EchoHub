@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import DashboardLayout from "../../../../../components/DashboardLayout";
-import { projectsApi, aiApi, notesApi } from "../../../../../lib/api";
+import { projectsApi, aiApi, notesApi, filesApi } from "../../../../../lib/api";
 import {
   ArrowLeft,
   Calendar,
@@ -35,18 +35,21 @@ export default function ProjectDetailPage() {
   const [aiLoading, setAiLoading] = useState(false);
   const [showAiSummary, setShowAiSummary] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<{
-    type: "project" | "milestone" | "note";
+    type: "project" | "milestone" | "note" | "file";
     id?: string;
   } | null>(null);
   const [notes, setNotes] = useState<any[]>([]);
   const [showAddNote, setShowAddNote] = useState(false);
   const [editingNote, setEditingNote] = useState<any>(null);
+  const [files, setFiles] = useState<any[]>([]);
+  const [uploading, setUploading] = useState(false);
 
   const { toasts, removeToast, success, error } = useToast();
 
   useEffect(() => {
     fetchProject();
     fetchNotes();
+    fetchFiles();
   }, [projectId]);
 
   const fetchProject = async () => {
@@ -66,6 +69,74 @@ export default function ProjectDetailPage() {
       setNotes(response.data);
     } catch (err) {
       console.error("Failed to fetch notes:", err);
+    }
+  };
+
+  const fetchFiles = async () => {
+    try {
+      const response = await filesApi.getByProject(projectId);
+      setFiles(response.data);
+    } catch (err) {
+      console.error("Failed to fetch files:", err);
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file size (10MB limit)
+    if (file.size > 10 * 1024 * 1024) {
+      error("File size must be less than 10MB");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      await filesApi.upload(file, undefined, projectId);
+      success("File uploaded successfully");
+      fetchFiles();
+      // Reset input
+      e.target.value = "";
+    } catch (err) {
+      error("Failed to upload file");
+      console.error("Failed to upload file:", err);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileDownload = async (file: any) => {
+    try {
+      const response = await filesApi.download(file.id);
+      const blob = new Blob([response.data], { type: file.mimeType });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", file.originalName);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      error("Failed to download file");
+      console.error("Failed to download file:", err);
+    }
+  };
+
+  const handleFileDelete = async () => {
+    if (!confirmDelete || confirmDelete.type !== "file" || !confirmDelete.id)
+      return;
+
+    try {
+      await filesApi.delete(confirmDelete.id);
+      success("File deleted successfully");
+      fetchFiles();
+    } catch (err) {
+      error("Failed to delete file");
+      console.error("Failed to delete file:", err);
+    } finally {
+      setConfirmDelete(null);
     }
   };
 
@@ -536,25 +607,89 @@ export default function ProjectDetailPage() {
                 Files
               </h2>
             </div>
-            <button
-              onClick={() =>
-                success("File upload feature coming in next update!")
-              }
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all"
-            >
+            <label className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all cursor-pointer">
+              <input
+                type="file"
+                onChange={handleFileUpload}
+                disabled={uploading}
+                className="hidden"
+              />
               <Plus className="w-5 h-5" />
-              <span>Upload File</span>
-            </button>
+              <span>{uploading ? "Uploading..." : "Upload File"}</span>
+            </label>
           </div>
-          <div className="text-center py-8">
-            <Paperclip className="w-12 h-12 text-[var(--color-muted-ink)] mx-auto mb-3" />
-            <p className="text-[var(--color-muted-ink)] mb-2">
-              No files uploaded yet
-            </p>
-            <p className="text-xs text-[var(--color-muted-ink)]">
-              File upload feature coming soon
-            </p>
-          </div>
+
+          {files.length === 0 ? (
+            <div className="text-center py-8">
+              <Paperclip className="w-12 h-12 text-[var(--color-muted-ink)] mx-auto mb-3" />
+              <p className="text-[var(--color-muted-ink)] mb-4">
+                No files uploaded yet
+              </p>
+              <label className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all cursor-pointer">
+                <input
+                  type="file"
+                  onChange={handleFileUpload}
+                  disabled={uploading}
+                  className="hidden"
+                />
+                <Plus className="w-5 h-5" />
+                <span>Upload First File</span>
+              </label>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {files.map((file: any) => (
+                <div
+                  key={file.id}
+                  className="p-4 rounded-xl bg-[var(--color-bg)] border border-[var(--color-line)] hover:border-[var(--color-accent)] transition-all group"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <Paperclip className="w-5 h-5 text-[var(--color-accent)] flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[var(--color-ink)] font-medium truncate">
+                          {file.originalName}
+                        </p>
+                        <p className="text-xs text-[var(--color-muted-ink)]">
+                          {(file.size / 1024).toFixed(2)} KB •{" "}
+                          {new Date(file.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => handleFileDownload(file)}
+                        className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/20 text-[var(--color-muted-ink)] hover:text-blue-600 transition-all"
+                        title="Download"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() =>
+                          setConfirmDelete({ type: "file", id: file.id })
+                        }
+                        className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 text-[var(--color-muted-ink)] hover:text-red-600 transition-all"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Edit Project Modal */}
@@ -660,6 +795,8 @@ export default function ProjectDetailPage() {
                 ? "Delete Project"
                 : confirmDelete.type === "milestone"
                 ? "Delete Milestone"
+                : confirmDelete.type === "file"
+                ? "Delete File"
                 : "Delete Note"
             }
             message={
@@ -667,6 +804,8 @@ export default function ProjectDetailPage() {
                 ? "Are you sure you want to delete this project? This action cannot be undone."
                 : confirmDelete.type === "milestone"
                 ? "Are you sure you want to delete this milestone? This action cannot be undone."
+                : confirmDelete.type === "file"
+                ? "Are you sure you want to delete this file? This action cannot be undone."
                 : "Are you sure you want to delete this note? This action cannot be undone."
             }
             confirmText="Delete"
@@ -681,6 +820,8 @@ export default function ProjectDetailPage() {
                 handleDeleteMilestone(confirmDelete.id);
               } else if (confirmDelete.type === "note") {
                 handleDeleteNote();
+              } else if (confirmDelete.type === "file") {
+                handleFileDelete();
               }
             }}
             onCancel={() => setConfirmDelete(null)}

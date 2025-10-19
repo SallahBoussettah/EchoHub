@@ -9,6 +9,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { AiModule } from './ai/ai.module';
 import { SearchModule } from './search/search.module';
 import { NotesModule } from './notes/notes.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -31,9 +32,9 @@ import { NotesModule } from './notes/notes.module';
     AiModule,
     SearchModule,
     NotesModule,
+    FilesModule,
 
     // TODO: Add more modules as you build them
-    // FilesModule,
     // NotificationsModule,
     // ActivityModule,
     // DashboardModule,
