@@ -88,3 +88,85 @@ export const clientsApi = {
     return response.data;
   },
 };
+
+// Projects API
+export const projectsApi = {
+  getAllByClient: async (clientId: string) => {
+    const response = await api.get(`/clients/${clientId}/projects`);
+    return response.data;
+  },
+
+  getOne: async (id: string) => {
+    const response = await api.get(`/projects/${id}`);
+    return response.data;
+  },
+
+  create: async (clientId: string, data: any) => {
+    const response = await api.post(`/clients/${clientId}/projects`, data);
+    return response.data;
+  },
+
+  update: async (id: string, data: any) => {
+    const response = await api.patch(`/projects/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id: string) => {
+    const response = await api.delete(`/projects/${id}`);
+    return response.data;
+  },
+
+  createMilestone: async (projectId: string, data: any) => {
+    const response = await api.post(`/projects/${projectId}/milestones`, data);
+    return response.data;
+  },
+
+  updateMilestone: async (
+    projectId: string,
+    milestoneId: string,
+    data: any
+  ) => {
+    const response = await api.patch(
+      `/projects/${projectId}/milestones/${milestoneId}`,
+      data
+    );
+    return response.data;
+  },
+
+  deleteMilestone: async (projectId: string, milestoneId: string) => {
+    const response = await api.delete(
+      `/projects/${projectId}/milestones/${milestoneId}`
+    );
+    return response.data;
+  },
+};
+
+// Activity API
+export const activityApi = {
+  getByClient: async (clientId: string) => {
+    const response = await api.get(`/clients/${clientId}/activity`);
+    return response.data;
+  },
+};
+
+// Search API
+export const searchApi = {
+  searchAll: async (query: string) => {
+    const response = await api.get(`/search?q=${encodeURIComponent(query)}`);
+    return response.data;
+  },
+
+  searchClients: async (query: string) => {
+    const response = await api.get(
+      `/search/clients?q=${encodeURIComponent(query)}`
+    );
+    return response.data;
+  },
+
+  searchProjects: async (query: string) => {
+    const response = await api.get(
+      `/search/projects?q=${encodeURIComponent(query)}`
+    );
+    return response.data;
+  },
+};

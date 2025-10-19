@@ -15,6 +15,7 @@ import {
   Edit,
   Archive,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function ClientsPage() {
   const [clients, setClients] = useState<any[]>([]);
@@ -146,9 +147,10 @@ export default function ClientsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {clients.map((client) => (
-              <div
+              <Link
                 key={client.id}
-                className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 hover:shadow-lg transition-all cursor-pointer group"
+                href={`/dashboard/clients/${client.id}`}
+                className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 hover:shadow-lg transition-all cursor-pointer group block"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-bright)] flex items-center justify-center">
@@ -211,7 +213,7 @@ export default function ClientsPage() {
                     {new Date(client.createdAt).toLocaleDateString()}
                   </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
