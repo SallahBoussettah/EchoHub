@@ -1,3 +1,4 @@
+import PublicNavbar from "./components/PublicNavbar";
 import UltraModernHero from "./components/UltraModernHero";
 import UltraModernShowcase from "./components/UltraModernShowcase";
 import ModernFeatures from "./components/ModernFeatures";
@@ -8,7 +9,8 @@ import Footer from "./components/Footer";
 
 export default function Home() {
   return (
-    <main className="relative bg-white">
+    <main className="relative bg-[var(--color-bg)]">
+      <PublicNavbar />
       <UltraModernHero />
       <UltraModernShowcase />
       <ModernFeatures />
