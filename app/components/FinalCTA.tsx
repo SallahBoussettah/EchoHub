@@ -41,7 +41,16 @@ export default function FinalCTA() {
 
   return (
     <div ref={barRef} className="fixed bottom-0 left-0 right-0 z-50">
-      <div className="bg-[var(--color-surface)] border-t border-[var(--color-line)] py-4 shadow-[var(--shadow-300)] backdrop-blur-xl">
+      <div className="bg-[var(--color-surface)] border-t border-[var(--color-line)] py-4 shadow-[var(--shadow-300)] backdrop-blur-xl relative">
+        {/* Close button - Top right on mobile only */}
+        <button
+          onClick={() => setDismissed(true)}
+          className="absolute top-2 right-2 p-2 rounded-lg hover:bg-[var(--color-muted)] transition-colors md:hidden"
+          aria-label="Close"
+        >
+          <X className="w-5 h-5 text-[var(--color-muted-ink)]" />
+        </button>
+
         <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between flex-wrap gap-4">
           <div>
             <p className="text-[var(--step-1)] font-semibold text-[var(--color-ink)]">
@@ -58,9 +67,10 @@ export default function FinalCTA() {
             >
               Get started
             </a>
+            {/* Close button - Next to button on desktop */}
             <button
               onClick={() => setDismissed(true)}
-              className="p-2 rounded-lg hover:bg-[var(--color-muted)] transition-colors"
+              className="hidden md:block p-2 rounded-lg hover:bg-[var(--color-muted)] transition-colors"
               aria-label="Close"
             >
               <X className="w-5 h-5 text-[var(--color-muted-ink)]" />

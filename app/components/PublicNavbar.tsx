@@ -98,10 +98,10 @@ export default function PublicNavbar() {
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Absolute positioned on right */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-[var(--color-ink)] hover:bg-[var(--color-surface)] rounded-lg transition-colors"
+              className="md:hidden absolute right-0 p-2 text-[var(--color-ink)] hover:bg-[var(--color-surface)] rounded-lg transition-colors"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? (

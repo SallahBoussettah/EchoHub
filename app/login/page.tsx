@@ -163,6 +163,13 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="py-6 text-center">
+        <p className="text-sm text-[var(--color-muted-ink)]">
+          © 2025 EchoHub. All rights reserved.
+        </p>
+      </footer>
     </main>
   );
 }
