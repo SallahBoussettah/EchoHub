@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import DashboardLayout from "../../../../../components/DashboardLayout";
-import { projectsApi, aiApi } from "../../../../../lib/api";
+import { projectsApi, aiApi, notesApi } from "../../../../../lib/api";
 import {
   ArrowLeft,
   Calendar,
@@ -35,24 +35,37 @@ export default function ProjectDetailPage() {
   const [aiLoading, setAiLoading] = useState(false);
   const [showAiSummary, setShowAiSummary] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<{
-    type: "project" | "milestone";
+    type: "project" | "milestone" | "note";
     id?: string;
   } | null>(null);
+  const [notes, setNotes] = useState<any[]>([]);
+  const [showAddNote, setShowAddNote] = useState(false);
+  const [editingNote, setEditingNote] = useState<any>(null);
 
   const { toasts, removeToast, success, error } = useToast();
 
   useEffect(() => {
     fetchProject();
+    fetchNotes();
   }, [projectId]);
 
   const fetchProject = async () => {
     try {
       const response = await projectsApi.getOne(projectId);
       setProject(response.data);
-    } catch (error) {
-      console.error("Failed to fetch project:", error);
+    } catch (err) {
+      console.error("Failed to fetch project:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchNotes = async () => {
+    try {
+      const response = await notesApi.getByProject(projectId);
+      setNotes(response.data);
+    } catch (err) {
+      console.error("Failed to fetch notes:", err);
     }
   };
 
@@ -149,6 +162,59 @@ export default function ProjectDetailPage() {
       console.error("AI summary error:", err);
     } finally {
       setAiLoading(false);
+    }
+  };
+
+  const handleAddNote = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      await notesApi.create({
+        content: formData.get("content") as string,
+        projectId,
+      });
+      setShowAddNote(false);
+      success("Note added successfully");
+      fetchNotes();
+    } catch (err) {
+      error("Failed to add note");
+      console.error("Failed to add note:", err);
+    }
+  };
+
+  const handleUpdateNote = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!editingNote) return;
+
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      await notesApi.update(editingNote.id, {
+        content: formData.get("content") as string,
+      });
+      setEditingNote(null);
+      success("Note updated successfully");
+      fetchNotes();
+    } catch (err) {
+      error("Failed to update note");
+      console.error("Failed to update note:", err);
+    }
+  };
+
+  const handleDeleteNote = async () => {
+    if (!confirmDelete || confirmDelete.type !== "note" || !confirmDelete.id)
+      return;
+
+    try {
+      await notesApi.delete(confirmDelete.id);
+      success("Note deleted successfully");
+      fetchNotes();
+    } catch (err) {
+      error("Failed to delete note");
+      console.error("Failed to delete note:", err);
+    } finally {
+      setConfirmDelete(null);
     }
   };
 
@@ -392,30 +458,101 @@ export default function ProjectDetailPage() {
           </div>
         </div>
 
-        {/* Notes Section (Coming Soon) */}
+        {/* Notes Section */}
         <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 mb-6">
-          <div className="flex items-center gap-3 mb-4">
-            <FileText className="w-5 h-5 text-[var(--color-accent)]" />
-            <h2 className="text-xl font-bold text-[var(--color-ink)]">Notes</h2>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <FileText className="w-5 h-5 text-[var(--color-accent)]" />
+              <h2 className="text-xl font-bold text-[var(--color-ink)]">
+                Notes
+              </h2>
+            </div>
+            <button
+              onClick={() => setShowAddNote(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all"
+            >
+              <Plus className="w-5 h-5" />
+              <span>Add Note</span>
+            </button>
           </div>
-          <div className="text-center py-8">
-            <FileText className="w-12 h-12 text-[var(--color-muted-ink)] mx-auto mb-3" />
-            <p className="text-[var(--color-muted-ink)]">
-              Rich text notes coming soon
-            </p>
-          </div>
+
+          {notes.length === 0 ? (
+            <div className="text-center py-8">
+              <FileText className="w-12 h-12 text-[var(--color-muted-ink)] mx-auto mb-3" />
+              <p className="text-[var(--color-muted-ink)] mb-4">No notes yet</p>
+              <button
+                onClick={() => setShowAddNote(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all"
+              >
+                <Plus className="w-5 h-5" />
+                <span>Add First Note</span>
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {notes.map((note: any) => (
+                <div
+                  key={note.id}
+                  className="p-4 rounded-xl bg-[var(--color-bg)] border border-[var(--color-line)] hover:border-[var(--color-accent)] transition-all group"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <p className="text-[var(--color-ink)] whitespace-pre-wrap">
+                        {note.content}
+                      </p>
+                      <p className="text-xs text-[var(--color-muted-ink)] mt-2">
+                        {new Date(note.createdAt).toLocaleString()}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => setEditingNote(note)}
+                        className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/20 text-[var(--color-muted-ink)] hover:text-blue-600 transition-all"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          setConfirmDelete({ type: "note", id: note.id })
+                        }
+                        className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 text-[var(--color-muted-ink)] hover:text-red-600 transition-all"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Files Section (Coming Soon) */}
+        {/* Files Section */}
         <div className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <Paperclip className="w-5 h-5 text-[var(--color-accent)]" />
-            <h2 className="text-xl font-bold text-[var(--color-ink)]">Files</h2>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Paperclip className="w-5 h-5 text-[var(--color-accent)]" />
+              <h2 className="text-xl font-bold text-[var(--color-ink)]">
+                Files
+              </h2>
+            </div>
+            <button
+              onClick={() =>
+                success("File upload feature coming in next update!")
+              }
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all"
+            >
+              <Plus className="w-5 h-5" />
+              <span>Upload File</span>
+            </button>
           </div>
           <div className="text-center py-8">
             <Paperclip className="w-12 h-12 text-[var(--color-muted-ink)] mx-auto mb-3" />
-            <p className="text-[var(--color-muted-ink)]">
-              File uploads coming soon
+            <p className="text-[var(--color-muted-ink)] mb-2">
+              No files uploaded yet
+            </p>
+            <p className="text-xs text-[var(--color-muted-ink)]">
+              File upload feature coming soon
             </p>
           </div>
         </div>
@@ -521,20 +658,29 @@ export default function ProjectDetailPage() {
             title={
               confirmDelete.type === "project"
                 ? "Delete Project"
-                : "Delete Milestone"
+                : confirmDelete.type === "milestone"
+                ? "Delete Milestone"
+                : "Delete Note"
             }
             message={
               confirmDelete.type === "project"
                 ? "Are you sure you want to delete this project? This action cannot be undone."
-                : "Are you sure you want to delete this milestone? This action cannot be undone."
+                : confirmDelete.type === "milestone"
+                ? "Are you sure you want to delete this milestone? This action cannot be undone."
+                : "Are you sure you want to delete this note? This action cannot be undone."
             }
             confirmText="Delete"
             cancelText="Cancel"
             onConfirm={() => {
               if (confirmDelete.type === "project") {
                 handleDeleteProject();
-              } else if (confirmDelete.id) {
+              } else if (
+                confirmDelete.type === "milestone" &&
+                confirmDelete.id
+              ) {
                 handleDeleteMilestone(confirmDelete.id);
+              } else if (confirmDelete.type === "note") {
+                handleDeleteNote();
               }
             }}
             onCancel={() => setConfirmDelete(null)}
@@ -603,6 +749,86 @@ export default function ProjectDetailPage() {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Add Note Modal */}
+        {showAddNote && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-6">
+            <div className="bg-[var(--color-surface)] rounded-3xl p-8 max-w-2xl w-full">
+              <h2 className="text-2xl font-bold text-[var(--color-ink)] mb-6">
+                Add Note
+              </h2>
+              <form onSubmit={handleAddNote} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-[var(--color-ink)] mb-2">
+                    Note Content *
+                  </label>
+                  <textarea
+                    name="content"
+                    required
+                    rows={6}
+                    placeholder="Write your note here..."
+                    className="w-full px-4 py-3 rounded-xl bg-[var(--color-bg)] border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-accent)] transition-colors resize-none"
+                  ></textarea>
+                </div>
+                <div className="flex gap-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowAddNote(false)}
+                    className="flex-1 px-6 py-3 rounded-xl bg-[var(--color-bg)] border border-[var(--color-line)] text-[var(--color-ink)] font-semibold hover:bg-[var(--color-surface)] transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all"
+                  >
+                    Add Note
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Edit Note Modal */}
+        {editingNote && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-6">
+            <div className="bg-[var(--color-surface)] rounded-3xl p-8 max-w-2xl w-full">
+              <h2 className="text-2xl font-bold text-[var(--color-ink)] mb-6">
+                Edit Note
+              </h2>
+              <form onSubmit={handleUpdateNote} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-[var(--color-ink)] mb-2">
+                    Note Content *
+                  </label>
+                  <textarea
+                    name="content"
+                    required
+                    rows={6}
+                    defaultValue={editingNote.content}
+                    className="w-full px-4 py-3 rounded-xl bg-[var(--color-bg)] border border-[var(--color-line)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-accent)] transition-colors resize-none"
+                  ></textarea>
+                </div>
+                <div className="flex gap-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setEditingNote(null)}
+                    className="flex-1 px-6 py-3 rounded-xl bg-[var(--color-bg)] border border-[var(--color-line)] text-[var(--color-ink)] font-semibold hover:bg-[var(--color-surface)] transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

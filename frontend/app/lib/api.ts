@@ -188,3 +188,53 @@ export const aiApi = {
     return response.data;
   },
 };
+
+// Notes API
+export const notesApi = {
+  create: async (data: {
+    content: string;
+    clientId?: string;
+    projectId?: string;
+  }) => {
+    const response = await api.post("/notes", data);
+    return response.data;
+  },
+
+  getByClient: async (clientId: string) => {
+    const response = await api.get(`/notes/client/${clientId}`);
+    return response.data;
+  },
+
+  getByProject: async (projectId: string) => {
+    const response = await api.get(`/notes/project/${projectId}`);
+    return response.data;
+  },
+
+  update: async (id: string, data: { content: string }) => {
+    const response = await api.patch(`/notes/${id}`, data);
+    return response.data;
+  },
+
+  delete: async (id: string) => {
+    const response = await api.delete(`/notes/${id}`);
+    return response.data;
+  },
+};
+
+// Files API (placeholder for now - will implement upload later)
+export const filesApi = {
+  getByClient: async (clientId: string) => {
+    const response = await api.get(`/files/client/${clientId}`);
+    return response.data;
+  },
+
+  getByProject: async (projectId: string) => {
+    const response = await api.get(`/files/project/${projectId}`);
+    return response.data;
+  },
+
+  delete: async (id: string) => {
+    const response = await api.delete(`/files/${id}`);
+    return response.data;
+  },
+};
