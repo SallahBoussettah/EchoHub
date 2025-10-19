@@ -39,16 +39,21 @@ export default function UltraModernShowcase() {
   return (
     <section
       ref={sectionRef}
-      className="py-32 relative overflow-hidden bg-white"
+      className="py-32 relative overflow-hidden bg-[var(--color-bg)]"
     >
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         <div className="text-center mb-16 showcase-content">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-black/10 mb-6 shadow-sm">
-            <Play className="w-4 h-4 text-black" fill="currentColor" />
-            <span className="text-sm font-semibold text-black">LIVE DEMO</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-surface)] border border-[var(--color-line)] mb-6 shadow-sm">
+            <Play
+              className="w-4 h-4 text-[var(--color-accent)]"
+              fill="currentColor"
+            />
+            <span className="text-sm font-semibold text-[var(--color-ink)]">
+              LIVE DEMO
+            </span>
           </div>
           <h2
-            className="font-black mb-6 leading-tight text-black"
+            className="font-black mb-6 leading-tight text-[var(--color-ink)]"
             style={{
               fontSize: "clamp(2.5rem, 6vw, 5rem)",
               fontFamily: "var(--font-display)",
@@ -58,7 +63,7 @@ export default function UltraModernShowcase() {
           </h2>
           <p
             style={{ fontSize: "clamp(1.125rem, 2vw, 1.375rem)" }}
-            className="text-black/60 max-w-2xl mx-auto"
+            className="text-[var(--color-muted-ink)] max-w-2xl mx-auto"
           >
             Interactive demos of EchoHub's most powerful features
           </p>
@@ -70,8 +75,8 @@ export default function UltraModernShowcase() {
             onClick={() => setActiveDemo("ai")}
             className={`flex items-center gap-2.5 px-6 py-3.5 rounded-2xl font-semibold transition-all duration-300 ${
               activeDemo === "ai"
-                ? "bg-black text-white shadow-2xl scale-105"
-                : "bg-white border border-black/10 hover:border-black/20 hover:shadow-lg"
+                ? "bg-[var(--color-accent)] text-[var(--color-bg)] shadow-2xl scale-105"
+                : "bg-[var(--color-surface)] border border-[var(--color-line)] hover:border-[var(--color-accent)] hover:shadow-lg text-[var(--color-ink)]"
             }`}
           >
             <Sparkles className="w-5 h-5" />
@@ -81,8 +86,8 @@ export default function UltraModernShowcase() {
             onClick={() => setActiveDemo("timeline")}
             className={`flex items-center gap-2.5 px-6 py-3.5 rounded-2xl font-semibold transition-all duration-300 ${
               activeDemo === "timeline"
-                ? "bg-black text-white shadow-2xl scale-105"
-                : "bg-white border border-black/10 hover:border-black/20 hover:shadow-lg"
+                ? "bg-[var(--color-accent)] text-[var(--color-bg)] shadow-2xl scale-105"
+                : "bg-[var(--color-surface)] border border-[var(--color-line)] hover:border-[var(--color-accent)] hover:shadow-lg text-[var(--color-ink)]"
             }`}
           >
             <Calendar className="w-5 h-5" />
@@ -93,35 +98,42 @@ export default function UltraModernShowcase() {
         {/* Demo Content */}
         <div className="max-w-6xl mx-auto showcase-content">
           {activeDemo === "ai" ? (
-            <div className="rounded-3xl bg-white border border-black/10 p-10 shadow-2xl">
+            <div className="rounded-3xl bg-[var(--color-surface)] border border-[var(--color-line)] p-10 shadow-2xl">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-black flex items-center justify-center shadow-lg">
+                  <div className="w-16 h-16 rounded-2xl bg-[var(--color-accent)] flex items-center justify-center shadow-lg">
                     <Sparkles
-                      className="w-8 h-8 text-white"
+                      className="w-8 h-8 text-[var(--color-bg)]"
                       strokeWidth={2.5}
                     />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold">AI Summary</h3>
-                    <p className="text-sm text-black/60">
+                    <h3 className="text-2xl font-bold text-[var(--color-ink)]">
+                      AI Summary
+                    </h3>
+                    <p className="text-sm text-[var(--color-muted-ink)]">
                       Transform chaos into clarity
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-black/5 border border-black/10">
-                  <Check className="w-4 h-4 text-black" strokeWidth={3} />
-                  <span className="text-sm font-semibold text-black">3.2s</span>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent)]/20 border border-[var(--color-accent)]/30">
+                  <Check
+                    className="w-4 h-4 text-[var(--color-accent)]"
+                    strokeWidth={3}
+                  />
+                  <span className="text-sm font-semibold text-[var(--color-accent)]">
+                    3.2s
+                  </span>
                 </div>
               </div>
 
               <div className="space-y-6">
                 {/* Raw Notes */}
-                <div className="p-6 rounded-2xl bg-[oklch(0.99_0.005_240)] border border-black/5">
-                  <div className="text-xs font-semibold text-black/40 uppercase tracking-wide mb-3">
+                <div className="p-6 rounded-2xl bg-[var(--color-muted)] border border-[var(--color-line)]">
+                  <div className="text-xs font-semibold text-[var(--color-muted-ink)] uppercase tracking-wide mb-3">
                     Raw Notes
                   </div>
-                  <p className="text-sm leading-relaxed text-black/50">
+                  <p className="text-sm leading-relaxed text-[var(--color-muted-ink)]">
                     Client called at 2pm. Wants to add a new feature to the
                     dashboard. Mentioned budget concerns but willing to discuss.
                     Follow up next week about timeline. Also asked about mobile
@@ -131,49 +143,57 @@ export default function UltraModernShowcase() {
 
                 {/* Arrow Animation */}
                 <div className="flex justify-center">
-                  <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center shadow-lg animate-pulse">
-                    <Sparkles className="w-7 h-7 text-white" />
+                  <div className="w-14 h-14 rounded-full bg-[var(--color-accent)] flex items-center justify-center shadow-lg animate-pulse">
+                    <Sparkles className="w-7 h-7 text-[var(--color-bg)]" />
                   </div>
                 </div>
 
                 {/* AI Summary */}
-                <div className="p-6 rounded-2xl bg-white shadow-xl border border-black/10">
-                  <div className="text-xs font-semibold text-black uppercase tracking-wide mb-4">
+                <div className="p-6 rounded-2xl bg-[var(--color-surface-elevated)] shadow-xl border border-[var(--color-line)]">
+                  <div className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-wide mb-4">
                     AI Summary
                   </div>
                   <div className="space-y-4 text-sm">
                     <div>
-                      <div className="font-bold mb-2">Action Items</div>
+                      <div className="font-bold mb-2 text-[var(--color-ink)]">
+                        Action Items
+                      </div>
                       <ul className="space-y-2 ml-4">
                         <li className="flex items-start gap-2">
                           <Check
-                            className="w-4 h-4 text-black mt-0.5 flex-shrink-0"
+                            className="w-4 h-4 text-[var(--color-accent)] mt-0.5 flex-shrink-0"
                             strokeWidth={3}
                           />
-                          <span>
+                          <span className="text-[var(--color-ink)]">
                             Schedule follow-up call next week re: dashboard
                             feature
                           </span>
                         </li>
                         <li className="flex items-start gap-2">
                           <Check
-                            className="w-4 h-4 text-black mt-0.5 flex-shrink-0"
+                            className="w-4 h-4 text-[var(--color-accent)] mt-0.5 flex-shrink-0"
                             strokeWidth={3}
                           />
-                          <span>Prepare budget proposal for new feature</span>
+                          <span className="text-[var(--color-ink)]">
+                            Prepare budget proposal for new feature
+                          </span>
                         </li>
                         <li className="flex items-start gap-2">
                           <Check
-                            className="w-4 h-4 text-black mt-0.5 flex-shrink-0"
+                            className="w-4 h-4 text-[var(--color-accent)] mt-0.5 flex-shrink-0"
                             strokeWidth={3}
                           />
-                          <span>Q2 mobile app discussion (low priority)</span>
+                          <span className="text-[var(--color-ink)]">
+                            Q2 mobile app discussion (low priority)
+                          </span>
                         </li>
                       </ul>
                     </div>
-                    <div className="pt-4 border-t border-black/5">
-                      <div className="font-bold mb-2">Budget</div>
-                      <p className="ml-4 text-black/70">
+                    <div className="pt-4 border-t border-[var(--color-line)]">
+                      <div className="font-bold mb-2 text-[var(--color-ink)]">
+                        Budget
+                      </div>
+                      <p className="ml-4 text-[var(--color-muted-ink)]">
                         Concerns raised, open to negotiation
                       </p>
                     </div>
@@ -182,14 +202,19 @@ export default function UltraModernShowcase() {
               </div>
             </div>
           ) : (
-            <div className="rounded-3xl bg-white border border-black/10 p-10 shadow-2xl">
+            <div className="rounded-3xl bg-[var(--color-surface)] border border-[var(--color-line)] p-10 shadow-2xl">
               <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 rounded-2xl bg-black flex items-center justify-center shadow-lg">
-                  <Calendar className="w-8 h-8 text-white" strokeWidth={2.5} />
+                <div className="w-16 h-16 rounded-2xl bg-[var(--color-accent)] flex items-center justify-center shadow-lg">
+                  <Calendar
+                    className="w-8 h-8 text-[var(--color-bg)]"
+                    strokeWidth={2.5}
+                  />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold">Client Hub Timeline</h3>
-                  <p className="text-sm text-black/60">
+                  <h3 className="text-2xl font-bold text-[var(--color-ink)]">
+                    Client Hub Timeline
+                  </h3>
+                  <p className="text-sm text-[var(--color-muted-ink)]">
                     Track every milestone with precision
                   </p>
                 </div>
@@ -218,29 +243,32 @@ export default function UltraModernShowcase() {
                     key={i}
                     className={`group flex items-center gap-4 p-5 rounded-2xl transition-all duration-300 cursor-pointer ${
                       milestone.status === "active"
-                        ? "bg-black/5 border-2 border-black/20 shadow-lg"
-                        : "bg-[oklch(0.99_0.005_240)] hover:bg-white hover:shadow-lg border border-transparent hover:border-black/10"
+                        ? "bg-[var(--color-accent)]/10 border-2 border-[var(--color-accent)]/30 shadow-lg"
+                        : "bg-[var(--color-muted)] hover:bg-[var(--color-surface-elevated)] hover:shadow-lg border border-transparent hover:border-[var(--color-line)]"
                     }`}
                   >
                     <div
                       className={`w-4 h-4 rounded-full ${
                         milestone.status === "completed"
-                          ? "bg-black"
+                          ? "bg-[var(--color-accent)]"
                           : milestone.status === "active"
-                          ? "bg-black animate-pulse"
-                          : "bg-black/20"
+                          ? "bg-[var(--color-accent)] animate-pulse"
+                          : "bg-[var(--color-line)]"
                       }`}
                     />
                     <div className="flex-1">
-                      <div className="font-semibold text-lg">
+                      <div className="font-semibold text-lg text-[var(--color-ink)]">
                         {milestone.label}
                       </div>
-                      <div className="text-sm text-black/50">
+                      <div className="text-sm text-[var(--color-muted-ink)]">
                         {milestone.date}
                       </div>
                     </div>
                     {milestone.status === "completed" && (
-                      <Check className="w-5 h-5 text-black" strokeWidth={3} />
+                      <Check
+                        className="w-5 h-5 text-[var(--color-accent)]"
+                        strokeWidth={3}
+                      />
                     )}
                   </div>
                 ))}

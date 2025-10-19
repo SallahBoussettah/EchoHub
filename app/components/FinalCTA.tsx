@@ -39,19 +39,19 @@ export default function FinalCTA() {
 
   return (
     <div ref={barRef} className="fixed bottom-0 left-0 right-0 z-50">
-      <div className="bg-[var(--color-ink)] text-[var(--color-bg)] py-4 shadow-[var(--shadow-300)]">
+      <div className="bg-[var(--color-surface)] border-t border-[var(--color-line)] py-4 shadow-[var(--shadow-300)] backdrop-blur-xl">
         <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between flex-wrap gap-4">
           <div>
-            <p className="text-[var(--step-1)] font-semibold">
+            <p className="text-[var(--step-1)] font-semibold text-[var(--color-ink)]">
               Ready to organize your client chaos?
             </p>
-            <p className="text-[var(--step-0)] opacity-80">
+            <p className="text-[var(--step-0)] text-[var(--color-muted-ink)]">
               Start free. No credit card required.
             </p>
           </div>
           <a
             href="#signup"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-[var(--r-md)] bg-white text-[var(--color-ink)] font-medium transition-all duration-200 hover:shadow-[var(--shadow-200)] hover:-translate-y-0.5"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-[var(--r-md)] bg-[var(--color-accent)] text-[var(--color-bg)] font-medium transition-all duration-200 hover:shadow-[var(--shadow-200)] hover:-translate-y-0.5 hover:bg-[var(--color-accent-bright)]"
           >
             Get started
           </a>

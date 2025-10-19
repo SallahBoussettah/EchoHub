@@ -33,19 +33,16 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="py-32 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[oklch(0.97_0.01_95)]/50 to-transparent" />
-
+    <section className="py-32 relative overflow-hidden bg-[var(--color-bg)]">
       <div className="container mx-auto px-6 max-w-3xl relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 rounded-full bg-white/80 backdrop-blur-xl border border-[var(--color-line)] mb-6">
-            <span className="text-sm font-medium text-[var(--color-accent-ink)]">
+          <div className="inline-block px-4 py-2 rounded-full bg-[var(--color-surface)] border border-[var(--color-line)] mb-6">
+            <span className="text-sm font-medium text-[var(--color-accent)]">
               FAQ
             </span>
           </div>
           <h2
-            className="font-bold mb-6 bg-gradient-to-br from-[var(--color-ink)] to-[oklch(0.4_0.05_265)] bg-clip-text text-transparent"
+            className="font-black mb-6 text-[var(--color-ink)]"
             style={{
               fontSize: "clamp(2.5rem, 5vw, 4rem)",
               fontFamily: "var(--font-display)",
@@ -60,21 +57,21 @@ export default function FAQ() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className="rounded-2xl bg-white/80 backdrop-blur-xl border border-[var(--color-line)] overflow-hidden hover:shadow-xl transition-all duration-300"
+              className="rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] overflow-hidden hover:shadow-xl hover:border-[var(--color-accent)] transition-all duration-300"
             >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
-                className="w-full p-6 flex items-center justify-between text-left hover:bg-[var(--color-muted)]/50 transition-colors"
+                className="w-full p-6 flex items-center justify-between text-left hover:bg-[var(--color-muted)] transition-colors"
                 aria-expanded={open === i}
               >
                 <span
-                  className="font-semibold pr-4"
+                  className="font-semibold pr-4 text-[var(--color-ink)]"
                   style={{ fontSize: "var(--step-1)" }}
                 >
                   {faq.q}
                 </span>
                 <ChevronDown
-                  className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${
+                  className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 text-[var(--color-accent)] ${
                     open === i ? "rotate-180" : ""
                   }`}
                 />

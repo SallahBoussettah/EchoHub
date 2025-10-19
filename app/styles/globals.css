@@ -5,14 +5,16 @@
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-display: var(--font-outfit), system-ui, sans-serif;
 
-  /* Colors */
-  --color-bg: oklch(0.98 0.01 95);
-  --color-ink: oklch(0.22 0.03 265);
-  --color-muted: oklch(0.96 0.01 95);
-  --color-muted-ink: oklch(0.4 0.02 265);
-  --color-accent-ink: oklch(0.42 0.1 30);
-  --color-accent-sky: oklch(0.8 0.07 240);
-  --color-line: color-mix(in oklab, var(--color-ink) 10%, transparent);
+  /* Dark Theme Colors */
+  --color-bg: oklch(0.15 0.01 240);
+  --color-surface: oklch(0.2 0.015 240);
+  --color-surface-elevated: oklch(0.25 0.02 240);
+  --color-ink: oklch(0.95 0.01 240);
+  --color-muted: oklch(0.3 0.02 240);
+  --color-muted-ink: oklch(0.65 0.02 240);
+  --color-accent: oklch(0.7 0.15 240);
+  --color-accent-bright: oklch(0.8 0.18 240);
+  --color-line: oklch(0.3 0.02 240);
 
   /* Type Scale */
   --step--1: 0.88rem;
@@ -32,13 +34,13 @@
   --radius: 1.25rem;
 
   /* Shadows */
-  --shadow-100: 0 1px 0 rgba(0, 0, 0, 0.06);
-  --shadow-200: 0 8px 24px rgba(0, 0, 0, 0.06);
-  --shadow-300: 0 24px 48px rgba(0, 0, 0, 0.08);
+  --shadow-100: 0 1px 0 rgba(0, 0, 0, 0.3);
+  --shadow-200: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-300: 0 24px 48px rgba(0, 0, 0, 0.5);
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 * {
@@ -56,13 +58,14 @@ html {
 }
 
 .card {
-  @apply rounded-[var(--radius)] border border-[var(--color-line)] shadow-[var(--shadow-100)] bg-white/90 backdrop-blur-xl;
+  @apply rounded-[var(--radius)] border border-[var(--color-line)] shadow-[var(--shadow-100)] bg-[var(--color-surface)]/90 backdrop-blur-xl;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-300);
+  border-color: var(--color-accent);
 }
 
 .link-underline {
@@ -88,12 +91,12 @@ html {
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center px-6 py-3 rounded-[var(--r-md)] bg-[var(--color-ink)] text-[var(--color-bg)] font-medium transition-all duration-200 hover:shadow-[var(--shadow-200)] hover:-translate-y-0.5;
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-[var(--r-md)] bg-[var(--color-accent)] text-[var(--color-bg)] font-medium transition-all duration-200 hover:shadow-[var(--shadow-200)] hover:-translate-y-0.5 hover:bg-[var(--color-accent-bright)];
   min-height: 44px;
 }
 
 .btn-ghost {
-  @apply inline-flex items-center justify-center px-6 py-3 rounded-[var(--r-md)] border border-[var(--color-line)] text-[var(--color-ink)] font-medium transition-all duration-200 hover:bg-[var(--color-muted)] hover:-translate-y-0.5;
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-[var(--r-md)] border border-[var(--color-line)] text-[var(--color-ink)] font-medium transition-all duration-200 hover:bg-[var(--color-muted)] hover:-translate-y-0.5 hover:border-[var(--color-accent)];
   min-height: 44px;
 }
 

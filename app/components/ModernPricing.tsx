@@ -86,15 +86,17 @@ export default function ModernPricing() {
   return (
     <section
       ref={sectionRef}
-      className="py-32 relative overflow-hidden bg-white"
+      className="py-32 relative overflow-hidden bg-[var(--color-bg)]"
     >
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 rounded-full bg-white border border-black/10 mb-6 shadow-sm">
-            <span className="text-sm font-medium text-black">PRICING</span>
+          <div className="inline-block px-4 py-2 rounded-full bg-[var(--color-surface)] border border-[var(--color-line)] mb-6 shadow-sm">
+            <span className="text-sm font-medium text-[var(--color-ink)]">
+              PRICING
+            </span>
           </div>
           <h2
-            className="font-black mb-6 text-black leading-tight"
+            className="font-black mb-6 text-[var(--color-ink)] leading-tight"
             style={{
               fontSize: "clamp(2.5rem, 5vw, 4rem)",
               fontFamily: "var(--font-display)",
@@ -105,19 +107,19 @@ export default function ModernPricing() {
           </h2>
           <p
             style={{ fontSize: "var(--step-2)" }}
-            className="text-black/60 mb-10"
+            className="text-[var(--color-muted-ink)] mb-10"
           >
             Start free. Upgrade when you're ready.
           </p>
 
           {/* Toggle */}
-          <div className="inline-flex items-center gap-3 p-1.5 rounded-2xl bg-white border border-black/10 shadow-lg">
+          <div className="inline-flex items-center gap-3 p-1.5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-line)] shadow-lg">
             <button
               onClick={() => setAnnual(false)}
               className={`px-6 py-2.5 rounded-xl font-medium transition-all duration-300 ${
                 !annual
-                  ? "bg-black text-white shadow-lg"
-                  : "text-black/60 hover:text-black"
+                  ? "bg-[var(--color-accent)] text-[var(--color-bg)] shadow-lg"
+                  : "text-[var(--color-muted-ink)] hover:text-[var(--color-ink)]"
               }`}
             >
               Monthly
@@ -126,12 +128,12 @@ export default function ModernPricing() {
               onClick={() => setAnnual(true)}
               className={`px-6 py-2.5 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 ${
                 annual
-                  ? "bg-black text-white shadow-lg"
-                  : "text-black/60 hover:text-black"
+                  ? "bg-[var(--color-accent)] text-[var(--color-bg)] shadow-lg"
+                  : "text-[var(--color-muted-ink)] hover:text-[var(--color-ink)]"
               }`}
             >
               Annual
-              <span className="text-xs px-2 py-0.5 rounded-full bg-black/10 text-black/70">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-[var(--color-accent)]/20 text-[var(--color-accent)]">
                 Save 17%
               </span>
             </button>
@@ -144,13 +146,13 @@ export default function ModernPricing() {
               key={i}
               className={`pricing-card relative rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 flex flex-col ${
                 plan.popular
-                  ? "bg-black text-white shadow-2xl scale-105"
-                  : "bg-white border border-black/10 hover:shadow-2xl"
+                  ? "bg-[var(--color-accent)] text-[var(--color-bg)] shadow-2xl scale-105"
+                  : "bg-[var(--color-surface)] border border-[var(--color-line)] hover:shadow-2xl hover:border-[var(--color-accent)] text-[var(--color-ink)]"
               }`}
               style={{ minHeight: "600px" }}
             >
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-white text-black text-sm font-semibold shadow-lg flex items-center gap-1">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-[var(--color-bg)] text-[var(--color-accent)] text-sm font-semibold shadow-lg flex items-center gap-1">
                   <Zap className="w-4 h-4" fill="currentColor" />
                   MOST POPULAR
                 </div>
@@ -159,7 +161,9 @@ export default function ModernPricing() {
               <div className="mb-8">
                 <h3
                   className={`font-bold mb-2 ${
-                    plan.popular ? "text-white" : "text-black"
+                    plan.popular
+                      ? "text-[var(--color-bg)]"
+                      : "text-[var(--color-ink)]"
                   }`}
                   style={{ fontSize: "var(--step-4)" }}
                 >
@@ -167,7 +171,9 @@ export default function ModernPricing() {
                 </h3>
                 <p
                   className={`text-sm ${
-                    plan.popular ? "text-white/80" : "text-black/60"
+                    plan.popular
+                      ? "opacity-90"
+                      : "text-[var(--color-muted-ink)]"
                   }`}
                 >
                   {plan.description}
@@ -178,14 +184,20 @@ export default function ModernPricing() {
                 <div className="flex items-baseline gap-2">
                   <span
                     className={`font-black ${
-                      plan.popular ? "text-white" : "text-black"
+                      plan.popular
+                        ? "text-[var(--color-bg)]"
+                        : "text-[var(--color-ink)]"
                     }`}
                     style={{ fontSize: "var(--step-6)" }}
                   >
                     ${annual ? plan.price.annual : plan.price.monthly}
                   </span>
                   <span
-                    className={plan.popular ? "text-white/70" : "text-black/60"}
+                    className={
+                      plan.popular
+                        ? "opacity-70"
+                        : "text-[var(--color-muted-ink)]"
+                    }
                   >
                     /{annual ? "year" : "month"}
                   </span>
@@ -197,13 +209,15 @@ export default function ModernPricing() {
                   <li key={j} className="flex items-start gap-3">
                     <Check
                       className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
-                        plan.popular ? "text-white" : "text-black"
+                        plan.popular
+                          ? "text-[var(--color-bg)]"
+                          : "text-[var(--color-accent)]"
                       }`}
                       strokeWidth={3}
                     />
                     <span
                       className={`text-sm ${
-                        plan.popular ? "text-white/90" : "text-black"
+                        plan.popular ? "opacity-90" : "text-[var(--color-ink)]"
                       }`}
                     >
                       {feature}
@@ -216,8 +230,8 @@ export default function ModernPricing() {
                 href="#signup"
                 className={`block w-full text-center px-6 py-4 rounded-2xl font-semibold transition-all duration-300 ${
                   plan.popular
-                    ? "bg-white text-black hover:shadow-2xl hover:scale-105"
-                    : "bg-black text-white hover:shadow-xl hover:scale-105"
+                    ? "bg-[var(--color-bg)] text-[var(--color-accent)] hover:shadow-2xl hover:scale-105"
+                    : "bg-[var(--color-accent)] text-[var(--color-bg)] hover:shadow-xl hover:scale-105"
                 }`}
               >
                 {plan.cta}
