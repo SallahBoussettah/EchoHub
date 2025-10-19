@@ -24,17 +24,17 @@
 - ⏳ File attachments (drag-and-drop)
 - ⏳ Activity timeline (chronological log)
 
-#### 3. Project Management ✅
+#### 3. Project Management
 
 - ✅ Create projects with title, description, deadline
 - ✅ Project status (Not Started / In Progress / Review / Completed)
 - ✅ Projects list in Client Hub (clickable cards)
 - ✅ Backend CRUD operations
-- ✅ Project Detail Page (full featured)
+- ✅ Project Detail Page (basic)
 - ✅ Milestone list (add, complete, delete)
 - ✅ Progress tracking with percentage
 - ✅ Edit/Delete project functionality
-- ✅ AI Summary generation
+- ⏳ AI Summary generation (backend ready, frontend missing)
 - ⏳ Notes per project (rich text)
 - ⏳ File attachments per project
 
@@ -189,24 +189,27 @@
 
 ## 📈 Completion Status
 
-**Completed**: ~80%
+**Completed**: ~60%
 
 - ✅ Authentication & User Management
 - ✅ Client Management (CRUD)
-- ✅ Project Management (Full CRUD + Milestones)
-- ✅ Dashboard (Basic)
-- ✅ Project Detail Page
-- ✅ AI Summaries (Differentiator!)
+- ✅ Project Management (CRUD + Milestones)
 - ✅ Search
-- ✅ Settings
+- ⏳ Dashboard (needs stats widgets)
+- ⏳ Project Detail Page (needs AI button)
+- ⏳ AI Summaries (backend done, frontend missing)
+- ⏳ Settings (UI done, functionality missing)
 
-**In Progress**: ~20%
+**In Progress**: ~40%
 
-- ⏳ Dashboard Stats (quick win)
-- ⏳ Onboarding
+- ⏳ Dashboard Stats & Widgets
+- ⏳ AI Summary Frontend
+- ⏳ Toast/Modal System
+- ⏳ Settings Functionality
 - ⏳ Notes & Files
 - ⏳ Activity Timeline
 - ⏳ Email Notifications
+- ⏳ Onboarding
 
 ---
 

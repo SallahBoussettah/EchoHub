@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import DashboardLayout from "../../../../../components/DashboardLayout";
-import { projectsApi } from "../../../../../lib/api";
+import { projectsApi, aiApi } from "../../../../../lib/api";
 import {
   ArrowLeft,
   Calendar,
@@ -14,9 +14,12 @@ import {
   Sparkles,
   FileText,
   Paperclip,
-  Clock,
+  X,
 } from "lucide-react";
 import Link from "next/link";
+import Toast from "../../../../../components/Toast";
+import ConfirmModal from "../../../../../components/ConfirmModal";
+import { useToast } from "../../../../../hooks/useToast";
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -28,6 +31,15 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showAddMilestone, setShowAddMilestone] = useState(false);
   const [showEditProject, setShowEditProject] = useState(false);
+  const [aiSummary, setAiSummary] = useState<any>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [showAiSummary, setShowAiSummary] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<{
+    type: "project" | "milestone";
+    id?: string;
+  } | null>(null);
+
+  const { toasts, removeToast, success, error } = useToast();
 
   useEffect(() => {
     fetchProject();
@@ -55,9 +67,11 @@ export default function ProjectDetailPage() {
       });
 
       setShowAddMilestone(false);
+      success("Milestone added successfully");
       fetchProject();
-    } catch (error) {
-      console.error("Failed to create milestone:", error);
+    } catch (err) {
+      error("Failed to create milestone");
+      console.error("Failed to create milestone:", err);
     }
   };
 
@@ -70,21 +84,24 @@ export default function ProjectDetailPage() {
         completed: !completed,
         completedAt: !completed ? new Date().toISOString() : null,
       });
+      success(completed ? "Milestone reopened" : "Milestone completed");
       fetchProject();
-    } catch (error) {
-      console.error("Failed to update milestone:", error);
+    } catch (err) {
+      error("Failed to update milestone");
+      console.error("Failed to update milestone:", err);
     }
   };
 
   const handleDeleteMilestone = async (milestoneId: string) => {
-    if (!confirm("Are you sure you want to delete this milestone?")) return;
-
     try {
       await projectsApi.deleteMilestone(projectId, milestoneId);
+      success("Milestone deleted successfully");
       fetchProject();
-    } catch (error) {
-      console.error("Failed to delete milestone:", error);
+    } catch (err) {
+      error("Failed to delete milestone");
+      console.error("Failed to delete milestone:", err);
     }
+    setConfirmDelete(null);
   };
 
   const handleEditProject = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -100,20 +117,38 @@ export default function ProjectDetailPage() {
       });
 
       setShowEditProject(false);
+      success("Project updated successfully");
       fetchProject();
-    } catch (error) {
-      console.error("Failed to update project:", error);
+    } catch (err) {
+      error("Failed to update project");
+      console.error("Failed to update project:", err);
     }
   };
 
   const handleDeleteProject = async () => {
-    if (!confirm("Are you sure you want to delete this project?")) return;
-
     try {
       await projectsApi.delete(projectId);
+      success("Project deleted successfully");
       router.push(`/dashboard/clients/${clientId}`);
-    } catch (error) {
-      console.error("Failed to delete project:", error);
+    } catch (err) {
+      error("Failed to delete project");
+      console.error("Failed to delete project:", err);
+    }
+    setConfirmDelete(null);
+  };
+
+  const handleGenerateAiSummary = async () => {
+    setAiLoading(true);
+    try {
+      const response = await aiApi.summarizeProject(projectId);
+      setAiSummary(response.data);
+      setShowAiSummary(true);
+      success("AI summary generated successfully");
+    } catch (err: any) {
+      error(err.response?.data?.message || "Failed to generate AI summary");
+      console.error("AI summary error:", err);
+    } finally {
+      setAiLoading(false);
     }
   };
 
@@ -210,7 +245,7 @@ export default function ProjectDetailPage() {
                 <Edit className="w-5 h-5 text-[var(--color-muted-ink)]" />
               </button>
               <button
-                onClick={handleDeleteProject}
+                onClick={() => setConfirmDelete({ type: "project" })}
                 className="p-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-line)] hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all"
               >
                 <Trash2 className="w-5 h-5 text-[var(--color-muted-ink)] hover:text-red-600" />
@@ -317,7 +352,9 @@ export default function ProjectDetailPage() {
                     )}
                   </div>
                   <button
-                    onClick={() => handleDeleteMilestone(milestone.id)}
+                    onClick={() =>
+                      setConfirmDelete({ type: "milestone", id: milestone.id })
+                    }
                     className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 text-[var(--color-muted-ink)] hover:text-red-600 transition-all opacity-0 group-hover:opacity-100"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -342,9 +379,15 @@ export default function ProjectDetailPage() {
                 </p>
               </div>
             </div>
-            <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all">
-              <Sparkles className="w-5 h-5" />
-              <span>Summarize</span>
+            <button
+              onClick={handleGenerateAiSummary}
+              disabled={aiLoading}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Sparkles
+                className={`w-5 h-5 ${aiLoading ? "animate-spin" : ""}`}
+              />
+              <span>{aiLoading ? "Generating..." : "Summarize"}</span>
             </button>
           </div>
         </div>
@@ -458,6 +501,108 @@ export default function ProjectDetailPage() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Toast Notifications */}
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+
+        {/* Confirm Delete Modal */}
+        {confirmDelete && (
+          <ConfirmModal
+            title={
+              confirmDelete.type === "project"
+                ? "Delete Project"
+                : "Delete Milestone"
+            }
+            message={
+              confirmDelete.type === "project"
+                ? "Are you sure you want to delete this project? This action cannot be undone."
+                : "Are you sure you want to delete this milestone? This action cannot be undone."
+            }
+            confirmText="Delete"
+            cancelText="Cancel"
+            onConfirm={() => {
+              if (confirmDelete.type === "project") {
+                handleDeleteProject();
+              } else if (confirmDelete.id) {
+                handleDeleteMilestone(confirmDelete.id);
+              }
+            }}
+            onCancel={() => setConfirmDelete(null)}
+            type="danger"
+          />
+        )}
+
+        {/* AI Summary Modal */}
+        {showAiSummary && aiSummary && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-6">
+            <div className="bg-[var(--color-surface)] rounded-3xl p-8 max-w-3xl w-full max-h-[80vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-bright)] flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-[var(--color-ink)]">
+                      AI Project Summary
+                    </h2>
+                    <p className="text-sm text-[var(--color-muted-ink)]">
+                      {aiSummary.cached
+                        ? "Cached summary"
+                        : "Generated just now"}{" "}
+                      • {new Date(aiSummary.createdAt).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowAiSummary(false)}
+                  className="p-2 rounded-lg hover:bg-[var(--color-bg)] transition-colors"
+                >
+                  <X className="w-5 h-5 text-[var(--color-muted-ink)]" />
+                </button>
+              </div>
+
+              <div className="rounded-2xl bg-[var(--color-bg)] border border-[var(--color-line)] p-6 mb-6">
+                <div className="prose prose-sm max-w-none">
+                  <div className="whitespace-pre-wrap text-[var(--color-ink)] leading-relaxed">
+                    {aiSummary.summary}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="text-xs text-[var(--color-muted-ink)]">
+                  {aiSummary.tokensUsed && (
+                    <span>Tokens used: {aiSummary.tokensUsed}</span>
+                  )}
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(aiSummary.summary);
+                      success("Summary copied to clipboard");
+                    }}
+                    className="px-4 py-2 rounded-xl bg-[var(--color-bg)] border border-[var(--color-line)] text-[var(--color-ink)] font-semibold hover:bg-[var(--color-surface)] transition-all"
+                  >
+                    Copy
+                  </button>
+                  <button
+                    onClick={() => setShowAiSummary(false)}
+                    className="px-6 py-2 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:brightness-110 transition-all"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}

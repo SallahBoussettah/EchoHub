@@ -12,6 +12,28 @@ import { CreateMilestoneDto } from './dto/create-milestone.dto';
 export class ProjectsService {
   constructor(private prisma: PrismaService) {}
 
+  async findAll(userId: string) {
+    return this.prisma.project.findMany({
+      where: { userId },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        _count: {
+          select: {
+            milestones: true,
+            notes: true,
+            files: true,
+          },
+        },
+      },
+      orderBy: { updatedAt: 'desc' },
+    });
+  }
+
   async create(
     userId: string,
     clientId: string,

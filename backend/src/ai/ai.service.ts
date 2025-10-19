@@ -82,7 +82,7 @@ export class AiService {
         type: 'PROJECT',
         projectId,
         tokensUsed: summary.tokensUsed,
-        model: 'gemini-2.5-flash',
+        model: 'gemini-pro',
       },
     });
 
@@ -112,7 +112,7 @@ export class AiService {
   }
 
   private async generateSummaryWithGemini(project: any) {
-    const model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
 
     // Build context from project data
     const milestonesText =

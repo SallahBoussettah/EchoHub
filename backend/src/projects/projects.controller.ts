@@ -20,6 +20,15 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
+  @Get('projects')
+  async findAll(@CurrentUser() user: any) {
+    const projects = await this.projectsService.findAll(user.id);
+    return {
+      success: true,
+      data: projects,
+    };
+  }
+
   @Post('clients/:clientId/projects')
   async create(
     @CurrentUser() user: any,

@@ -91,6 +91,11 @@ export const clientsApi = {
 
 // Projects API
 export const projectsApi = {
+  getAll: async () => {
+    const response = await api.get("/projects");
+    return response.data;
+  },
+
   getAllByClient: async (clientId: string) => {
     const response = await api.get(`/clients/${clientId}/projects`);
     return response.data;
@@ -167,6 +172,19 @@ export const searchApi = {
     const response = await api.get(
       `/search/projects?q=${encodeURIComponent(query)}`
     );
+    return response.data;
+  },
+};
+
+// AI API
+export const aiApi = {
+  summarizeProject: async (projectId: string) => {
+    const response = await api.post(`/ai/summarize/project/${projectId}`);
+    return response.data;
+  },
+
+  getUsage: async () => {
+    const response = await api.get("/ai/usage");
     return response.data;
   },
 };
