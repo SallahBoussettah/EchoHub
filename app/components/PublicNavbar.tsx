@@ -37,7 +37,7 @@ export default function PublicNavbar() {
             </Link>
 
             {/* Desktop Navigation - Centered */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-6">
               <Link
                 href="/features"
                 className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
@@ -51,6 +51,12 @@ export default function PublicNavbar() {
                 Pricing
               </Link>
               <Link
+                href="/use-cases"
+                className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
+              >
+                Use Cases
+              </Link>
+              <Link
                 href="/about"
                 className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
               >
@@ -61,6 +67,12 @@ export default function PublicNavbar() {
                 className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
               >
                 Blog
+              </Link>
+              <Link
+                href="/contact"
+                className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
+              >
+                Contact
               </Link>
             </div>
 
@@ -120,6 +132,13 @@ export default function PublicNavbar() {
                 Pricing
               </Link>
               <Link
+                href="/use-cases"
+                className="text-lg font-medium text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Use Cases
+              </Link>
+              <Link
                 href="/about"
                 className="text-lg font-medium text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors"
                 onClick={() => setIsMenuOpen(false)}
@@ -132,6 +151,13 @@ export default function PublicNavbar() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Blog
+              </Link>
+              <Link
+                href="/contact"
+                className="text-lg font-medium text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
               </Link>
 
               <div className="h-px bg-[var(--color-line)] my-4" />
