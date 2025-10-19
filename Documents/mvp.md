@@ -75,7 +75,7 @@ Freelancers juggle Gmail, Notion, Trello, Google Docs, and spreadsheets. They lo
 
 - "Summarize this project" button on any project
 - Generates 3-5 bullet point summary of current status
-- Uses Claude API (Sonnet 3.5)
+- Uses Google Gemini 2.5 Flash API
 - Cached summaries (regenerate on demand)
 
 **Why**: This is the AI magic that saves time and provides clarity
@@ -178,16 +178,16 @@ Freelancers juggle Gmail, Notion, Trello, Google Docs, and spreadsheets. They lo
 ### Backend
 
 - **Runtime**: Node.js with Next.js API routes
-- **Database**: PostgreSQL (Supabase or Railway)
+- **Database**: PostgreSQL (local/Oracle VPS)
 - **ORM**: Prisma
 - **Authentication**: NextAuth.js
 - **File Storage**: AWS S3 or Cloudflare R2
-- **AI**: Anthropic Claude API (Sonnet 3.5)
+- **AI**: Google Gemini 2.5 Flash
 
 ### Infrastructure
 
 - **Hosting**: Vercel (frontend + API routes)
-- **Database**: Supabase or Railway
+- **Database**: PostgreSQL on Oracle VPS
 - **Email**: Resend or SendGrid
 - **Analytics**: Vercel Analytics + PostHog (optional)
 - **Error Tracking**: Sentry
@@ -304,7 +304,7 @@ Freelancers juggle Gmail, Notion, Trello, Google Docs, and spreadsheets. They lo
 
 ### Week 5-6: AI & Polish
 
-- Claude API integration
+- Gemini API integration
 - AI summary generation
 - Search functionality
 - Email notifications setup
@@ -355,7 +355,7 @@ Freelancers juggle Gmail, Notion, Trello, Google Docs, and spreadsheets. They lo
 ### Technical Risks
 
 - **AI costs**: Mitigate with caching and usage limits
-- **Database scaling**: Start with Supabase, can migrate later
+- **Database scaling**: PostgreSQL on Oracle VPS, can scale vertically or add read replicas
 - **File storage costs**: Implement strict limits, compress images
 
 ### Product Risks

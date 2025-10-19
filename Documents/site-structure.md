@@ -95,6 +95,8 @@
 - "How to Use AI to Summarize Client Feedback"
 - "The Ultimate Client Onboarding Checklist"
 
+**Note**: Blog is optional for MVP launch. Can be added post-launch.
+
 ---
 
 ### 6. Use Cases (`/use-cases`)
@@ -471,16 +473,20 @@ Description: Start free with 3 clients. Upgrade to Pro for unlimited clients, AI
 
 **Priority 2 (Post-MVP)**:
 
-- Features page
-- About page
-- Blog
-- Use cases
-- Search page
+- Features page (expand with real screenshots)
+- About page (add team info)
+- Blog (start content marketing)
+- Use cases (add testimonials)
 
 **Priority 3 (Future)**:
 
-- Integrations
-- Templates
+- Integrations page
+- Templates marketplace
 - Changelog
-- Community
-- API docs
+- Community forum
+- API documentation
+
+**Docs Pages Status**:
+
+- ✅ MVP Features: Dashboard, Client Management, Projects, AI Features, Search, Settings, Security
+- ⏳ Post-MVP Features: Proposals, Scheduler, Inbox Sync, Productivity (mark as "Coming Soon" in docs)

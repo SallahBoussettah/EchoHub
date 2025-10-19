@@ -24,7 +24,7 @@ Build the definitive AI-powered workspace for freelancers and creators to manage
 - [ ] Project timeline view with milestones
 - [ ] Note-taking system with rich text editor
 - [ ] File upload and attachment system
-- [ ] Basic AI summary generation (using Claude API)
+- [ ] Basic AI summary generation (using Gemini API)
 - [ ] User dashboard with project overview
 
 ### Month 3: Polish & Launch

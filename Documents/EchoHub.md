@@ -76,7 +76,7 @@ All through one elegant, minimal interface.
 - Laravel or Node backend
 - Next.js + Tailwind v4 frontend
 - PostgreSQL database
-- Claude Sonnet 4.5 for summarization & task automation
+- Google Gemini 2.5 Flash for summarization & task automation
 - Kiro IDE for landing page and design workflow
 
 ---

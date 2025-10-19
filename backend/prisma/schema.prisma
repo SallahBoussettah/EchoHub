@@ -1,0 +1,300 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER & AUTHENTICATION
+// ============================================
+
+model User {
+  id       String  @id @default(cuid())
+  email    String  @unique
+  name     String
+  password String? // Null for OAuth users
+  avatar   String? // URL to avatar image
+  timezone String  @default("UTC")
+  workType String? // e.g., "Designer", "Developer", "Consultant"
+
+  // OAuth
+  googleId String? @unique
+
+  // Subscription
+  plan    Plan @default(FREE)
+  aiUsage Int  @default(0) // AI summaries used this month
+  aiLimit Int  @default(5) // AI summaries limit per month
+
+  // Preferences
+  emailNotifications Boolean @default(true)
+  deadlineReminders  Boolean @default(true)
+  weeklySummary      Boolean @default(false)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  clients    Client[]
+  projects   Project[]
+  notes      Note[]
+  files      File[]
+  activities Activity[]
+
+  @@map("users")
+}
+
+enum Plan {
+  FREE
+  PRO
+  TEAM
+}
+
+// ============================================
+// CLIENTS
+// ============================================
+
+model Client {
+  id      String       @id @default(cuid())
+  name    String
+  email   String?
+  phone   String?
+  company String?
+  website String?
+  status  ClientStatus @default(ACTIVE)
+
+  // Metadata
+  notes String? // Quick notes field
+
+  // Ownership
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  archivedAt DateTime?
+
+  // Relations
+  projects    Project[]
+  clientNotes Note[]
+  files       File[]
+  activities  Activity[]
+
+  @@index([userId])
+  @@index([status])
+  @@map("clients")
+}
+
+enum ClientStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ARCHIVED
+}
+
+// ============================================
+// PROJECTS
+// ============================================
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  description String?
+  status      ProjectStatus @default(NOT_STARTED)
+  deadline    DateTime?
+
+  // Ownership
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+
+  // Relations
+  milestones  Milestone[]
+  notes       Note[]
+  files       File[]
+  activities  Activity[]
+  aiSummaries AiSummary[]
+
+  @@index([clientId])
+  @@index([userId])
+  @@index([status])
+  @@index([deadline])
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  REVIEW
+  COMPLETED
+}
+
+// ============================================
+// MILESTONES
+// ============================================
+
+model Milestone {
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+  completed   Boolean @default(false)
+  order       Int // For sorting
+
+  // Ownership
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+
+  @@index([projectId])
+  @@map("milestones")
+}
+
+// ============================================
+// NOTES
+// ============================================
+
+model Note {
+  id      String @id @default(cuid())
+  content String // Rich text (HTML or JSON)
+
+  // Associations (one of these will be set)
+  clientId  String?
+  client    Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Ownership
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([clientId])
+  @@index([projectId])
+  @@index([userId])
+  @@map("notes")
+}
+
+// ============================================
+// FILES
+// ============================================
+
+model File {
+  id           String @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int // In bytes
+  url          String // S3/R2 URL
+
+  // Associations (one of these will be set)
+  clientId  String?
+  client    Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Ownership
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  @@index([clientId])
+  @@index([projectId])
+  @@index([userId])
+  @@map("files")
+}
+
+// ============================================
+// AI SUMMARIES
+// ============================================
+
+model AiSummary {
+  id      String      @id @default(cuid())
+  content String // Generated summary
+  type    SummaryType
+
+  // Associations
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Metadata
+  tokensUsed Int // Gemini API tokens
+  model      String @default("gemini-2.5-flash")
+
+  // Timestamps
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+  @@map("ai_summaries")
+}
+
+enum SummaryType {
+  PROJECT
+  CLIENT
+}
+
+// ============================================
+// ACTIVITY LOG
+// ============================================
+
+model Activity {
+  id          String       @id @default(cuid())
+  action      ActivityType
+  description String // Human-readable description
+  metadata    Json? // Additional data (flexible)
+
+  // Associations (optional)
+  clientId  String?
+  client    Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // Ownership
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Timestamp
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([clientId])
+  @@index([projectId])
+  @@index([createdAt])
+  @@map("activities")
+}
+
+enum ActivityType {
+  CLIENT_CREATED
+  CLIENT_UPDATED
+  CLIENT_ARCHIVED
+  PROJECT_CREATED
+  PROJECT_UPDATED
+  PROJECT_COMPLETED
+  MILESTONE_COMPLETED
+  NOTE_CREATED
+  NOTE_UPDATED
+  FILE_UPLOADED
+  FILE_DELETED
+  AI_SUMMARY_GENERATED
+}

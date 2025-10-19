@@ -1,104 +1,75 @@
-# EchoHub Landing Page
+# EchoHub - AI Workspace for Freelancers
 
-A cinematic, production-ready landing page for EchoHub — an AI-powered workspace for freelancers and creators.
+One calm place for all your client chaos. Manage clients, projects, and communications with AI-powered summaries.
 
-## Tech Stack
+## 🚀 Quick Start
 
-- **Next.js 15.5** (App Router, Turbopack)
-- **React 19.2**
-- **Tailwind CSS v4** (CSS-first configuration)
-- **GSAP 3.13** (ScrollTrigger for animations)
-- **TypeScript**
-
-## Features
-
-- 🎨 Light-neutral matte design with OKLCH color space
-- ✨ Cinematic parallax hero with film-strip cards
-- 🎯 Interactive mini-demos (Timeline & AI Summary)
-- ♿ Accessible (respects prefers-reduced-motion)
-- 🚀 Performance optimized (CLS < 0.05, LCP < 2.5s)
-- 📱 Fully responsive
-
-## Getting Started
-
-### Install dependencies
+### Frontend (Next.js)
 
 ```bash
+cd frontend
 npm install
-# or
-pnpm install
-# or
-yarn install
-```
-
-### Run development server
-
-```bash
 npm run dev
-# or
-pnpm dev
-# or
-yarn dev
+# Open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the result.
-
-### Build for production
+### Backend (NestJS)
 
 ```bash
-npm run build
-npm start
+cd backend
+npm install
+cp .env.example .env
+# Edit .env with your credentials
+npm run prisma:generate
+npm run prisma:migrate
+npm run start:dev
+# API at http://localhost:3001/api/v1
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-/app
-  /components
-    Hero.tsx              # Parallax hero section
-    ProblemSolution.tsx   # Split comparison section
-    Features.tsx          # 6-card feature grid
-    Pricing.tsx           # 3-tier pricing with toggle
-    FAQ.tsx              # Accessible accordion
-    Proof.tsx            # Testimonial logos
-    FinalCTA.tsx         # Sticky footer CTA
-    Footer.tsx           # Site footer
-    /MiniDemos
-      TimelineDemo.tsx    # Interactive timeline
-      SummaryReveal.tsx   # AI summary toggle
-  /lib
-    gsapClient.ts        # GSAP plugin registration
-    motionPrefs.ts       # Motion preference detection
-  /styles
-    globals.css          # Tailwind + theme tokens
-  layout.tsx             # Root layout
-  page.tsx               # Main landing page
+EchoHub/
+├── frontend/          # Next.js 15 application
+├── backend/           # NestJS API
+└── Documents/         # All documentation
 ```
 
-## Design Tokens
+## 📚 Documentation
 
-All design tokens are defined in `app/styles/globals.css` using Tailwind v4's `@theme` directive:
+- **[SUMMARY.md](./SUMMARY.md)** - What we've built and current status
+- **[Backend Setup](./backend/SETUP.md)** - Step-by-step backend setup
+- **[PostgreSQL Setup](./backend/POSTGRESQL-SETUP.md)** - Local database installation
+- **[Implementation Guide](./Documents/mvp-implementation-guide.md)** - Week-by-week plan
+- **[Database Schema](./Documents/database-schema.md)** - Complete Prisma schema
+- **[Backend Architecture](./Documents/backend-architecture.md)** - Design decisions
+- **[Next Steps](./Documents/NEXT-STEPS.md)** - What to build next
 
-- Colors: OKLCH color space for perceptual uniformity
-- Typography: Fluid type scale (step--1 to step6)
-- Spacing: Consistent radius and shadow system
-- Motion: Respects user preferences
+## 🎯 MVP Features
 
-## Accessibility
+1. ✅ Authentication (email + Google OAuth)
+2. ⏳ Client Hub (CRUD, status management)
+3. ⏳ Project Management (milestones, deadlines)
+4. ⏳ AI Summaries (Gemini API)
+5. ⏳ Dashboard (overview, stats, activity)
+6. ⏳ Search (full-text across all content)
+7. ⏳ Email Notifications (deadline reminders)
 
-- Semantic HTML with proper heading hierarchy
-- ARIA labels and keyboard navigation
-- Focus visible states
-- Respects `prefers-reduced-motion`
-- Color contrast AA compliant
+## 🛠️ Tech Stack
 
-## Performance
+- **Frontend**: Next.js 15, Tailwind v4, React 19
+- **Backend**: NestJS 10, Prisma, PostgreSQL
+- **AI**: Google Gemini 2.5 Flash
+- **Database**: PostgreSQL (local/Oracle VPS)
+- **File Storage**: Cloudflare R2
+- **Email**: Resend
 
-- Optimized images with Next.js Image component
-- Code splitting and lazy loading
-- Minimal dependencies
-- CSS-first approach with Tailwind v4
+## 📖 Getting Started
 
-## License
+1. Read [SUMMARY.md](./SUMMARY.md) for project overview
+2. Follow [backend/SETUP.md](./backend/SETUP.md) to set up backend
+3. Follow [Documents/mvp-implementation-guide.md](./Documents/mvp-implementation-guide.md) for implementation
+
+## 📝 License
 
 MIT
