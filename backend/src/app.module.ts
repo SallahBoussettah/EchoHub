@@ -4,6 +4,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { ClientsModule } from './clients/clients.module';
 
 @Module({
   imports: [
@@ -11,19 +12,19 @@ import { UsersModule } from './users/users.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    
+
     // Scheduling (for cron jobs)
     ScheduleModule.forRoot(),
-    
+
     // Database
     PrismaModule,
-    
+
     // Feature modules
     AuthModule,
     UsersModule,
-    
+    ClientsModule,
+
     // TODO: Add more modules as you build them
-    // ClientsModule,
     // ProjectsModule,
     // NotesModule,
     // FilesModule,
