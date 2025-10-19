@@ -185,8 +185,8 @@ export default function ClientHubPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 10 * 1024 * 1024) {
-      error("File size must be less than 10MB");
+    if (file.size > 50 * 1024 * 1024) {
+      error("File size must be less than 50MB");
       return;
     }
 
@@ -422,8 +422,8 @@ export default function ClientHubPage() {
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-[var(--color-line)] mb-8">
-          <div className="flex gap-6">
+        <div className="border-b border-[var(--color-line)] mb-6 md:mb-8 -mx-4 md:mx-0 px-4 md:px-0">
+          <div className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide">
             {[
               { id: "overview", label: "Overview", icon: FolderKanban },
               { id: "projects", label: "Projects", icon: FolderKanban },
@@ -434,14 +434,16 @@ export default function ClientHubPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
-                className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-all ${
+                className={`flex items-center gap-2 px-3 md:px-4 py-3 border-b-2 transition-all whitespace-nowrap ${
                   activeTab === tab.id
                     ? "border-[var(--color-accent)] text-[var(--color-accent)]"
                     : "border-transparent text-[var(--color-muted-ink)] hover:text-[var(--color-ink)]"
                 }`}
               >
-                <tab.icon className="w-5 h-5" />
-                <span className="font-semibold">{tab.label}</span>
+                <tab.icon className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="font-semibold text-sm md:text-base">
+                  {tab.label}
+                </span>
               </button>
             ))}
           </div>

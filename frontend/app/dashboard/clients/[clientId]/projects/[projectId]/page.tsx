@@ -85,9 +85,9 @@ export default function ProjectDetailPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file size (10MB limit)
-    if (file.size > 10 * 1024 * 1024) {
-      error("File size must be less than 10MB");
+    // Check file size (50MB limit)
+    if (file.size > 50 * 1024 * 1024) {
+      error("File size must be less than 50MB");
       return;
     }
 
