@@ -171,9 +171,219 @@ export default function ClientManagementPage() {
         </section>
 
         <section>
+          <h2
+            id="organizing-clients"
+            className="text-2xl font-bold text-[var(--color-ink)] mb-4 mt-12"
+          >
+            Organizing Clients
+          </h2>
+          <p className="text-[var(--color-muted-ink)] mb-4">
+            Keep your client list organized with tags, filters, and custom
+            views.
+          </p>
+
+          <h3
+            id="tags-labels"
+            className="text-xl font-bold text-[var(--color-ink)] mb-4 mt-8"
+          >
+            Tags & Labels
+          </h3>
+          <p className="text-[var(--color-muted-ink)] mb-4">
+            Use tags to categorize clients by industry, project type, or
+            priority level.
+          </p>
+          <div className="space-y-3 mb-8">
+            {[
+              {
+                tag: "Industry Tags",
+                examples: "Tech, Healthcare, E-commerce, Education",
+                color: "bg-blue-500",
+              },
+              {
+                tag: "Priority Tags",
+                examples: "VIP, High Priority, Standard, Low Priority",
+                color: "bg-purple-500",
+              },
+              {
+                tag: "Project Type",
+                examples: "Web Design, Development, Consulting, Marketing",
+                color: "bg-green-500",
+              },
+              {
+                tag: "Custom Tags",
+                examples: "Create your own tags for specific needs",
+                color: "bg-orange-500",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-line)]"
+              >
+                <div className="flex items-start gap-3">
+                  <div
+                    className={`w-3 h-3 rounded-full ${item.color} mt-1.5`}
+                  />
+                  <div>
+                    <h4 className="font-semibold text-[var(--color-ink)] mb-1">
+                      {item.tag}
+                    </h4>
+                    <p className="text-sm text-[var(--color-muted-ink)]">
+                      {item.examples}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <h3
+            id="filtering-sorting"
+            className="text-xl font-bold text-[var(--color-ink)] mb-4 mt-8"
+          >
+            Filtering & Sorting
+          </h3>
+          <p className="text-[var(--color-muted-ink)] mb-4">
+            Quickly find clients using powerful filters and sorting options.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            {[
+              {
+                filter: "By Status",
+                description: "Active, Paused, Completed, Archived",
+              },
+              {
+                filter: "By Date",
+                description: "Recently added, Last updated, Oldest first",
+              },
+              {
+                filter: "By Revenue",
+                description: "Highest to lowest value clients",
+              },
+              {
+                filter: "By Activity",
+                description: "Most to least recent activity",
+              },
+              {
+                filter: "By Tags",
+                description: "Filter by one or multiple tags",
+              },
+              {
+                filter: "By Project Count",
+                description: "Clients with most/least projects",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-line)]"
+              >
+                <h4 className="font-semibold text-[var(--color-ink)] mb-1">
+                  {item.filter}
+                </h4>
+                <p className="text-sm text-[var(--color-muted-ink)]">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <h3
+            id="custom-views"
+            className="text-xl font-bold text-[var(--color-ink)] mb-4 mt-8"
+          >
+            Custom Views
+          </h3>
+          <p className="text-[var(--color-muted-ink)] mb-4">
+            Save your favorite filter combinations as custom views for quick
+            access.
+          </p>
+          <div className="space-y-3">
+            {[
+              {
+                view: "Active VIP Clients",
+                description: "High-priority clients with active projects",
+              },
+              {
+                view: "Needs Attention",
+                description: "Clients with overdue tasks or pending feedback",
+              },
+              {
+                view: "This Month's Clients",
+                description: "All clients added in the current month",
+              },
+              {
+                view: "Long-term Partners",
+                description: "Clients with 3+ completed projects",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-line)]"
+              >
+                <h4 className="font-semibold text-[var(--color-ink)] mb-1">
+                  {item.view}
+                </h4>
+                <p className="text-sm text-[var(--color-muted-ink)]">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2
+            id="client-communication"
+            className="text-2xl font-bold text-[var(--color-ink)] mb-4 mt-12"
+          >
+            Client Communication
+          </h2>
+          <p className="text-[var(--color-muted-ink)] mb-4">
+            Track all communication with clients in one centralized location.
+          </p>
+          <div className="space-y-3">
+            {[
+              {
+                feature: "Email Integration",
+                description:
+                  "Sync emails from Gmail or Outlook directly to client hubs",
+              },
+              {
+                feature: "Notes & Comments",
+                description: "Add internal notes and client-facing comments",
+              },
+              {
+                feature: "File Sharing",
+                description:
+                  "Share documents, designs, and deliverables securely",
+              },
+              {
+                feature: "Activity Timeline",
+                description: "See chronological history of all interactions",
+              },
+              {
+                feature: "Meeting Notes",
+                description: "Document meeting discussions and action items",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-line)]"
+              >
+                <h4 className="font-semibold text-[var(--color-ink)] mb-1">
+                  {item.feature}
+                </h4>
+                <p className="text-sm text-[var(--color-muted-ink)]">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section>
           <h3
             id="best-practices"
-            className="text-xl font-bold text-[var(--color-ink)] mb-4"
+            className="text-xl font-bold text-[var(--color-ink)] mb-4 mt-12"
           >
             Best Practices
           </h3>
@@ -184,6 +394,9 @@ export default function ClientManagementPage() {
               "Regularly update project status to track progress",
               "Archive completed clients to keep your active list clean",
               "Use the search function to quickly find specific clients",
+              "Add tags immediately when creating new clients",
+              "Review client activity weekly to stay proactive",
+              "Document all important conversations in notes",
             ].map((tip, index) => (
               <div
                 key={index}

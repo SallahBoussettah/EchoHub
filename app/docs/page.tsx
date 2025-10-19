@@ -90,32 +90,47 @@ export default function DocsPage() {
                 title: "Client Hubs",
                 description:
                   "Organize everything about each client in one place",
+                href: "/docs/client-management",
               },
               {
                 title: "AI Summaries",
                 description: "Get instant summaries of your project notes",
+                href: "/docs/ai-features",
               },
               {
-                title: "Project Tracking",
-                description: "Track deadlines and milestones effortlessly",
+                title: "Proposals",
+                description: "Create polished proposals from briefs in minutes",
+                href: "/docs/proposals",
               },
               {
-                title: "Smart Search",
+                title: "Smart Scheduler",
+                description: "AI detects conflicts and suggests adjustments",
+                href: "/docs/scheduler",
+              },
+              {
+                title: "Inbox Sync",
                 description:
-                  "Find anything across all your clients and projects",
+                  "Connect Gmail or Outlook to centralize communication",
+                href: "/docs/inbox-sync",
+              },
+              {
+                title: "Dashboard",
+                description: "See project health and milestones at a glance",
+                href: "/docs/dashboard",
               },
             ].map((feature, index) => (
-              <div
+              <a
                 key={index}
-                className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-line)]"
+                href={feature.href}
+                className="p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-line)] hover:border-[var(--color-accent)] transition-all group"
               >
-                <h3 className="font-semibold text-[var(--color-ink)] mb-2">
+                <h3 className="font-semibold text-[var(--color-ink)] mb-2 group-hover:text-[var(--color-accent)] transition-colors">
                   {feature.title}
                 </h3>
                 <p className="text-sm text-[var(--color-muted-ink)]">
                   {feature.description}
                 </p>
-              </div>
+              </a>
             ))}
           </div>
         </section>

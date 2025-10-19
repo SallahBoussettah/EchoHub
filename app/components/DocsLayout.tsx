@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import {
   Menu,
   X,
-  ChevronRight,
   BookOpen,
   Rocket,
   Users,
@@ -19,6 +18,9 @@ import {
   Mail,
   Lock,
   FileCheck,
+  BarChart3,
+  Calendar,
+  Inbox,
 } from "lucide-react";
 
 interface DocsLayoutProps {
@@ -37,9 +39,19 @@ const navigation = [
     icon: Users,
   },
   {
+    title: "Dashboard",
+    href: "/docs/dashboard",
+    icon: BarChart3,
+  },
+  {
     title: "Client Management",
     href: "/docs/client-management",
     icon: Users,
+  },
+  {
+    title: "Projects & Tasks",
+    href: "/docs/projects",
+    icon: FileText,
   },
   {
     title: "AI Features",
@@ -47,9 +59,19 @@ const navigation = [
     icon: Sparkles,
   },
   {
-    title: "Projects & Tasks",
-    href: "/docs/projects",
+    title: "Proposals",
+    href: "/docs/proposals",
     icon: FileText,
+  },
+  {
+    title: "Smart Scheduler",
+    href: "/docs/scheduler",
+    icon: Calendar,
+  },
+  {
+    title: "Inbox Sync",
+    href: "/docs/inbox-sync",
+    icon: Inbox,
   },
   {
     title: "Search & Organization",
@@ -117,153 +139,184 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
   }, [pathname]);
 
   return (
-    <div className="flex h-screen bg-[var(--color-bg)]">
-      {/* Mobile sidebar backdrop */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+    <>
+      <style jsx global>{`
+        /* Custom Scrollbar Styles */
+        .docs-scrollbar::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed inset-y-0 left-0 z-50 w-80 transform bg-[var(--color-bg)] border-r border-[var(--color-line)] transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex h-full flex-col">
-          {/* Sidebar header */}
-          <div className="flex h-16 items-center justify-between px-6 border-b border-[var(--color-line)]">
-            <Link
-              href="/docs"
-              className="flex items-center gap-2 text-lg font-semibold text-[var(--color-ink)]"
-            >
-              <BookOpen className="w-5 h-5 text-[var(--color-accent)]" />
-              Documentation
-            </Link>
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="lg:hidden p-2 rounded-lg hover:bg-[var(--color-surface)] transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+        .docs-scrollbar::-webkit-scrollbar-track {
+          background: var(--color-surface);
+          border-radius: 4px;
+        }
 
-          {/* Sidebar content */}
-          <div className="flex-1 overflow-y-auto px-6 py-6">
-            {/* Search */}
-            <div className="relative mb-6">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-muted-ink)]" />
-              <input
-                type="text"
-                placeholder="Search docs..."
-                className="w-full pl-10 pr-4 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-line)] text-[var(--color-ink)] text-sm placeholder:text-[var(--color-muted-ink)] focus:outline-none focus:border-[var(--color-accent)] transition-colors"
-              />
+        .docs-scrollbar::-webkit-scrollbar-thumb {
+          background: var(--color-line);
+          border-radius: 4px;
+          transition: background 0.2s ease;
+        }
+
+        .docs-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: var(--color-accent);
+        }
+
+        /* Firefox scrollbar */
+        .docs-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: var(--color-line) var(--color-surface);
+        }
+      `}</style>
+
+      <div className="flex h-screen bg-[var(--color-bg)]">
+        {/* Mobile sidebar backdrop */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        {/* Sidebar */}
+        <aside
+          className={`fixed inset-y-0 left-0 z-50 w-80 transform bg-[var(--color-bg)] border-r border-[var(--color-line)] transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="flex h-full flex-col">
+            {/* Sidebar header */}
+            <div className="flex h-16 items-center justify-between px-6 border-b border-[var(--color-line)]">
+              <Link
+                href="/docs"
+                className="flex items-center gap-2 text-lg font-semibold text-[var(--color-ink)]"
+              >
+                <BookOpen className="w-5 h-5 text-[var(--color-accent)]" />
+                Documentation
+              </Link>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="lg:hidden p-2 rounded-lg hover:bg-[var(--color-surface)] transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            {/* Navigation */}
-            <nav className="space-y-1 mb-8">
-              <h3 className="text-xs font-semibold text-[var(--color-muted-ink)] uppercase tracking-wide mb-3">
-                Contents
-              </h3>
-              {navigation.map((item) => {
-                const isActive = pathname === item.href;
-                return (
+            {/* Sidebar content */}
+            <div className="flex-1 overflow-y-auto px-6 py-6 docs-scrollbar">
+              {/* Search */}
+              <div className="relative mb-6">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-muted-ink)]" />
+                <input
+                  type="text"
+                  placeholder="Search docs..."
+                  className="w-full pl-10 pr-4 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-line)] text-[var(--color-ink)] text-sm placeholder:text-[var(--color-muted-ink)] focus:outline-none focus:border-[var(--color-accent)] transition-colors"
+                />
+              </div>
+
+              {/* Navigation */}
+              <nav className="space-y-1 mb-8">
+                <h3 className="text-xs font-semibold text-[var(--color-muted-ink)] uppercase tracking-wide mb-3">
+                  Contents
+                </h3>
+                {navigation.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        isActive
+                          ? "bg-[var(--color-accent)] text-white"
+                          : "text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface)]"
+                      }`}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <item.icon className="w-4 h-4 flex-shrink-0" />
+                      <span>{item.title}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+
+              {/* Quick Links */}
+              <nav className="space-y-1">
+                <h3 className="text-xs font-semibold text-[var(--color-muted-ink)] uppercase tracking-wide mb-3">
+                  Quick Links
+                </h3>
+                {quickLinks.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                      isActive
-                        ? "bg-[var(--color-accent)] text-white"
-                        : "text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface)]"
-                    }`}
-                    onClick={() => setSidebarOpen(false)}
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-all"
                   >
                     <item.icon className="w-4 h-4 flex-shrink-0" />
                     <span>{item.title}</span>
                   </Link>
-                );
-              })}
-            </nav>
+                ))}
+              </nav>
+            </div>
+          </div>
+        </aside>
 
-            {/* Quick Links */}
-            <nav className="space-y-1">
-              <h3 className="text-xs font-semibold text-[var(--color-muted-ink)] uppercase tracking-wide mb-3">
-                Quick Links
-              </h3>
-              {quickLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-all"
-                >
-                  <item.icon className="w-4 h-4 flex-shrink-0" />
-                  <span>{item.title}</span>
-                </Link>
-              ))}
-            </nav>
+        {/* Main content */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Mobile header */}
+          <header className="lg:hidden flex h-16 items-center justify-between px-6 border-b border-[var(--color-line)] bg-[var(--color-bg)]">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 rounded-lg hover:bg-[var(--color-surface)] transition-colors"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            <Link
+              href="/docs"
+              className="text-lg font-semibold text-[var(--color-ink)]"
+            >
+              Documentation
+            </Link>
+            <div className="w-9" /> {/* Spacer */}
+          </header>
+
+          {/* Content area */}
+          <div className="flex-1 flex overflow-hidden">
+            {/* Main content */}
+            <main className="flex-1 overflow-y-auto docs-scrollbar">
+              <div className="docs-content max-w-4xl mx-auto px-6 py-12">
+                {children}
+              </div>
+            </main>
+
+            {/* Table of contents */}
+            {tableOfContents.length > 0 && (
+              <aside className="hidden xl:block w-64 overflow-y-auto border-l border-[var(--color-line)] bg-[var(--color-bg)] docs-scrollbar">
+                <div className="sticky top-0 px-6 py-12">
+                  <h3 className="text-sm font-semibold text-[var(--color-ink)] mb-4">
+                    On this page
+                  </h3>
+                  <nav className="space-y-2">
+                    {tableOfContents.map((item) => (
+                      <a
+                        key={item.id}
+                        href={`#${item.id}`}
+                        className={`block text-sm text-[var(--color-muted-ink)] hover:text-[var(--color-accent)] transition-colors ${
+                          item.level === 2
+                            ? "pl-0"
+                            : item.level === 3
+                            ? "pl-4"
+                            : "pl-0"
+                        }`}
+                      >
+                        {item.title}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              </aside>
+            )}
           </div>
         </div>
-      </aside>
-
-      {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile header */}
-        <header className="lg:hidden flex h-16 items-center justify-between px-6 border-b border-[var(--color-line)] bg-[var(--color-bg)]">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="p-2 rounded-lg hover:bg-[var(--color-surface)] transition-colors"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <Link
-            href="/docs"
-            className="text-lg font-semibold text-[var(--color-ink)]"
-          >
-            Documentation
-          </Link>
-          <div className="w-9" /> {/* Spacer */}
-        </header>
-
-        {/* Content area */}
-        <div className="flex-1 flex overflow-hidden">
-          {/* Main content */}
-          <main className="flex-1 overflow-y-auto">
-            <div className="docs-content max-w-4xl mx-auto px-6 py-12">
-              {children}
-            </div>
-          </main>
-
-          {/* Table of contents */}
-          {tableOfContents.length > 0 && (
-            <aside className="hidden xl:block w-64 overflow-y-auto border-l border-[var(--color-line)] bg-[var(--color-bg)]">
-              <div className="sticky top-0 px-6 py-12">
-                <h3 className="text-sm font-semibold text-[var(--color-ink)] mb-4">
-                  On this page
-                </h3>
-                <nav className="space-y-2">
-                  {tableOfContents.map((item) => (
-                    <a
-                      key={item.id}
-                      href={`#${item.id}`}
-                      className={`block text-sm text-[var(--color-muted-ink)] hover:text-[var(--color-accent)] transition-colors ${
-                        item.level === 2
-                          ? "pl-0"
-                          : item.level === 3
-                          ? "pl-4"
-                          : "pl-0"
-                      }`}
-                    >
-                      {item.title}
-                    </a>
-                  ))}
-                </nav>
-              </div>
-            </aside>
-          )}
-        </div>
       </div>
-    </div>
+    </>
   );
 }
