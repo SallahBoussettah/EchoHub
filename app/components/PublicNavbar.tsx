@@ -26,17 +26,17 @@ export default function PublicNavbar() {
         }`}
       >
         <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
+          <div className="flex items-center justify-center h-16 relative">
+            {/* Logo - Absolute positioned on left */}
             <Link
               href="/"
-              className="text-xl font-semibold text-[var(--color-ink)] hover:opacity-80 transition-opacity"
+              className="absolute left-0 text-xl font-semibold text-[var(--color-ink)] hover:opacity-80 transition-opacity"
               style={{ fontFamily: "var(--font-display)" }}
             >
               EchoHub
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation - Centered */}
             <div className="hidden md:flex items-center gap-8">
               <Link
                 href="/features"
@@ -64,8 +64,8 @@ export default function PublicNavbar() {
               </Link>
             </div>
 
-            {/* Desktop CTAs */}
-            <div className="hidden md:flex items-center gap-3">
+            {/* Desktop CTAs - Absolute positioned on right */}
+            <div className="hidden md:flex items-center gap-3 absolute right-0">
               <Link
                 href="/login"
                 className="px-4 py-2 border border-[var(--color-line)] text-[var(--color-ink)] rounded-lg hover:border-[var(--color-accent)] transition-all font-medium text-sm"
