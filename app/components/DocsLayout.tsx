@@ -101,6 +101,7 @@ const navigation = [
 ];
 
 const quickLinks = [
+  { title: "Home", href: "/", icon: BookOpen },
   { title: "Contact Support", href: "/contact", icon: Mail },
   { title: "Privacy Policy", href: "/privacy", icon: Lock },
   { title: "Terms of Service", href: "/terms", icon: FileCheck },
@@ -113,12 +114,10 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
   >([]);
   const pathname = usePathname();
 
-  // Generate table of contents from headings
+  // Generate table of contents from headings (only H2)
   useEffect(() => {
     const generateTOC = () => {
-      const headings = document.querySelectorAll(
-        ".docs-content h1, .docs-content h2, .docs-content h3"
-      );
+      const headings = document.querySelectorAll(".docs-content h2");
       const toc = Array.from(headings).map((heading, index) => {
         const id = heading.id || `heading-${index}`;
         if (!heading.id) {
@@ -299,13 +298,7 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
                       <a
                         key={item.id}
                         href={`#${item.id}`}
-                        className={`block text-sm text-[var(--color-muted-ink)] hover:text-[var(--color-accent)] transition-colors ${
-                          item.level === 2
-                            ? "pl-0"
-                            : item.level === 3
-                            ? "pl-4"
-                            : "pl-0"
-                        }`}
+                        className="block text-sm text-[var(--color-muted-ink)] hover:text-[var(--color-accent)] transition-colors"
                       >
                         {item.title}
                       </a>
