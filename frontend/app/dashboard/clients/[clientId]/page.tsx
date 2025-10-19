@@ -18,6 +18,9 @@ import {
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
+import Toast from "../../../components/Toast";
+import ConfirmModal from "../../../components/ConfirmModal";
+import { useToast } from "../../../hooks/useToast";
 
 type Tab = "overview" | "projects" | "notes" | "files" | "timeline";
 
@@ -31,6 +34,9 @@ export default function ClientHubPage() {
   const [loading, setLoading] = useState(true);
   const [showAddProject, setShowAddProject] = useState(false);
   const [showEditClient, setShowEditClient] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+
+  const { toasts, removeToast, success, error } = useToast();
 
   useEffect(() => {
     fetchClient();
@@ -70,20 +76,26 @@ export default function ClientHubPage() {
       });
 
       setShowAddProject(false);
+      success("Project created successfully");
       fetchProjects();
-    } catch (error) {
-      console.error("Failed to create project:", error);
+    } catch (err) {
+      error("Failed to create project");
+      console.error("Failed to create project:", err);
     }
   };
 
-  const handleDeleteProject = async (projectId: string) => {
-    if (!confirm("Are you sure you want to delete this project?")) return;
+  const handleDeleteProject = async () => {
+    if (!confirmDelete) return;
 
     try {
-      await projectsApi.delete(projectId);
+      await projectsApi.delete(confirmDelete);
+      success("Project deleted successfully");
       fetchProjects();
-    } catch (error) {
-      console.error("Failed to delete project:", error);
+    } catch (err) {
+      error("Failed to delete project");
+      console.error("Failed to delete project:", err);
+    } finally {
+      setConfirmDelete(null);
     }
   };
 
@@ -103,9 +115,11 @@ export default function ClientHubPage() {
       });
 
       setShowEditClient(false);
+      success("Client updated successfully");
       fetchClient();
-    } catch (error) {
-      console.error("Failed to update client:", error);
+    } catch (err) {
+      error("Failed to update client");
+      console.error("Failed to update client:", err);
     }
   };
 
@@ -150,6 +164,29 @@ export default function ClientHubPage() {
   return (
     <DashboardLayout>
       <div className="p-8">
+        {/* Toast Notifications */}
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+
+        {/* Confirm Delete Modal */}
+        {confirmDelete && (
+          <ConfirmModal
+            title="Delete Project"
+            message="Are you sure you want to delete this project? This action cannot be undone."
+            confirmText="Delete"
+            cancelText="Cancel"
+            onConfirm={handleDeleteProject}
+            onCancel={() => setConfirmDelete(null)}
+            type="danger"
+          />
+        )}
+
         {/* Header */}
         <div className="mb-8">
           <Link
@@ -392,7 +429,8 @@ export default function ClientHubPage() {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        handleDeleteProject(project.id);
+                        e.stopPropagation();
+                        setConfirmDelete(project.id);
                       }}
                       className="absolute top-4 right-4 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 text-[var(--color-muted-ink)] hover:text-red-600 transition-all opacity-0 group-hover:opacity-100 z-10"
                     >

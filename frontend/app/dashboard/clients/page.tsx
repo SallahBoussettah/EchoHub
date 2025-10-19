@@ -16,12 +16,18 @@ import {
   Archive,
 } from "lucide-react";
 import Link from "next/link";
+import Toast from "../../components/Toast";
+import ConfirmModal from "../../components/ConfirmModal";
+import { useToast } from "../../hooks/useToast";
 
 export default function ClientsPage() {
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState("ALL");
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+
+  const { toasts, removeToast, success, error } = useToast();
 
   useEffect(() => {
     fetchClients();
@@ -56,26 +62,55 @@ export default function ClientsPage() {
       });
 
       setShowAddModal(false);
+      success("Client added successfully");
       fetchClients();
-    } catch (error) {
-      console.error("Failed to create client:", error);
+    } catch (err) {
+      error("Failed to create client");
+      console.error("Failed to create client:", err);
     }
   };
 
-  const handleDeleteClient = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this client?")) return;
+  const handleDeleteClient = async () => {
+    if (!confirmDelete) return;
 
     try {
-      await clientsApi.delete(id);
+      await clientsApi.delete(confirmDelete);
+      success("Client deleted successfully");
       fetchClients();
-    } catch (error) {
-      console.error("Failed to delete client:", error);
+    } catch (err) {
+      error("Failed to delete client");
+      console.error("Failed to delete client:", err);
+    } finally {
+      setConfirmDelete(null);
     }
   };
 
   return (
     <DashboardLayout>
       <div className="p-8">
+        {/* Toast Notifications */}
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+
+        {/* Confirm Delete Modal */}
+        {confirmDelete && (
+          <ConfirmModal
+            title="Delete Client"
+            message="Are you sure you want to delete this client? This will also delete all associated projects and data. This action cannot be undone."
+            confirmText="Delete"
+            cancelText="Cancel"
+            onConfirm={handleDeleteClient}
+            onCancel={() => setConfirmDelete(null)}
+            type="danger"
+          />
+        )}
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -170,8 +205,9 @@ export default function ClientsPage() {
                     </span>
                     <button
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
-                        handleDeleteClient(client.id);
+                        setConfirmDelete(client.id);
                       }}
                       className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 text-[var(--color-muted-ink)] hover:text-red-600 transition-all opacity-0 group-hover:opacity-100"
                     >
