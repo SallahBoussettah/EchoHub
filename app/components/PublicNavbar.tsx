@@ -79,6 +79,12 @@ export default function PublicNavbar() {
             {/* Desktop CTAs - Absolute positioned on right */}
             <div className="hidden md:flex items-center gap-3 absolute right-0">
               <Link
+                href="/docs"
+                className="px-4 py-2 text-[var(--color-ink)] rounded-lg hover:bg-[var(--color-surface)] transition-all font-medium text-sm"
+              >
+                Docs
+              </Link>
+              <Link
                 href="/login"
                 className="px-4 py-2 border border-[var(--color-line)] text-[var(--color-ink)] rounded-lg hover:border-[var(--color-accent)] transition-all font-medium text-sm"
               >
@@ -158,6 +164,13 @@ export default function PublicNavbar() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
+              </Link>
+              <Link
+                href="/docs"
+                className="text-lg font-medium text-[var(--color-ink)] hover:text-[var(--color-accent)] transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Docs
               </Link>
 
               <div className="h-px bg-[var(--color-line)] my-4" />
