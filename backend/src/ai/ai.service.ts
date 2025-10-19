@@ -82,7 +82,7 @@ export class AiService {
         type: 'PROJECT',
         projectId,
         tokensUsed: summary.tokensUsed,
-        model: 'gemini-pro',
+        model: 'gemini-2.0-flash-exp',
       },
     });
 
@@ -112,7 +112,10 @@ export class AiService {
   }
 
   private async generateSummaryWithGemini(project: any) {
-    const model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
+    // Using gemini-2.0-flash-exp (experimental, free tier, latest)
+    const model = this.genAI.getGenerativeModel({
+      model: 'gemini-2.0-flash-exp',
+    });
 
     // Build context from project data
     const milestonesText =
@@ -163,8 +166,10 @@ Keep it professional and actionable. Use bullet points starting with •`;
       };
     } catch (error) {
       console.error('Gemini API error:', error);
+      // Provide more detailed error message
+      const errorMessage = error?.message || 'Unknown error';
       throw new BadRequestException(
-        'Failed to generate AI summary. Please try again.',
+        `Failed to generate AI summary: ${errorMessage}. Please check your API key and model availability.`,
       );
     }
   }
