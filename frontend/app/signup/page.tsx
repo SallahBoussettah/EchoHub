@@ -178,7 +178,13 @@ export default function SignupPage() {
                   type="checkbox"
                   id="terms"
                   required
-                  className="w-4 h-4 mt-1 rounded border-[var(--color-line)] text-[var(--color-accent)] focus:ring-[var(--color-accent)]"
+                  className="w-4 h-4 mt-1 rounded border-[var(--color-line)] text-[var(--color-accent)] focus:ring-[var(--color-accent)] focus:ring-offset-0 flex-shrink-0"
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    minWidth: "16px",
+                    minHeight: "16px",
+                  }}
                 />
                 <label
                   htmlFor="terms"

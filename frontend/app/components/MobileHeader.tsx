@@ -14,14 +14,14 @@ export default function MobileHeader() {
         <div className="flex items-center justify-between h-full px-4">
           <Link
             href="/dashboard"
-            className="text-xl font-bold text-[var(--color-ink)]"
+            className="text-xl font-bold text-[var(--color-ink)] flex items-center"
             style={{ fontFamily: "var(--font-display)" }}
           >
             EchoHub
           </Link>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 rounded-lg hover:bg-[var(--color-bg)] transition-colors"
+            className="p-2 rounded-lg hover:bg-[var(--color-bg)] transition-colors flex items-center justify-center"
           >
             {menuOpen ? (
               <X className="w-6 h-6 text-[var(--color-ink)]" />

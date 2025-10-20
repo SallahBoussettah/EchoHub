@@ -26,58 +26,58 @@ export default function PublicNavbar() {
         }`}
       >
         <div className="container mx-auto px-6">
-          <div className="flex items-center justify-center h-16 relative">
-            {/* Logo - Absolute positioned on left */}
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
             <Link
               href="/"
-              className="absolute left-0 text-xl font-semibold text-[var(--color-ink)] hover:opacity-80 transition-opacity"
+              className="text-xl font-bold text-[var(--color-ink)] hover:opacity-80 transition-opacity flex items-center"
               style={{ fontFamily: "var(--font-display)" }}
             >
               EchoHub
             </Link>
 
-            {/* Desktop Navigation - Centered */}
-            <div className="hidden md:flex items-center gap-6">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
               <Link
                 href="/features"
-                className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
+                className="nav-link text-sm font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
               >
                 Features
               </Link>
               <Link
                 href="/pricing"
-                className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
+                className="nav-link text-sm font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
               >
                 Pricing
               </Link>
               <Link
                 href="/use-cases"
-                className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
+                className="nav-link text-sm font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
               >
                 Use Cases
               </Link>
               <Link
                 href="/about"
-                className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
+                className="nav-link text-sm font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
               >
                 About
               </Link>
               <Link
                 href="/blog"
-                className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
+                className="nav-link text-sm font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
               >
                 Blog
               </Link>
               <Link
                 href="/contact"
-                className="nav-link text-[15px] font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
+                className="nav-link text-sm font-medium text-[var(--color-muted-ink)] hover:text-[var(--color-ink)] transition-colors"
               >
                 Contact
               </Link>
             </div>
 
-            {/* Desktop CTAs - Absolute positioned on right */}
-            <div className="hidden md:flex items-center gap-3 absolute right-0">
+            {/* Desktop CTAs */}
+            <div className="hidden md:flex items-center gap-3">
               <Link
                 href="/docs"
                 className="px-4 py-2 text-[var(--color-ink)] rounded-lg hover:bg-[var(--color-surface)] transition-all font-medium text-sm"
@@ -98,10 +98,10 @@ export default function PublicNavbar() {
               </Link>
             </div>
 
-            {/* Mobile Menu Button - Absolute positioned on right */}
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden absolute right-0 p-2 text-[var(--color-ink)] hover:bg-[var(--color-surface)] rounded-lg transition-colors"
+              className="md:hidden p-2 text-[var(--color-ink)] hover:bg-[var(--color-surface)] rounded-lg transition-colors flex items-center"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? (

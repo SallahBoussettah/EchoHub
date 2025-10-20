@@ -89,7 +89,7 @@ export default function SettingsPage() {
 
         {/* Tabs */}
         <div className="border-b border-[var(--color-line)] mb-6 md:mb-8 -mx-4 md:mx-0 px-4 md:px-0">
-          <div className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide">
+          <div className="flex items-end gap-4 md:gap-6 overflow-x-auto scrollbar-hide">
             {[
               { id: "profile", label: "Profile", icon: User },
               { id: "account", label: "Account", icon: SettingsIcon },
@@ -99,13 +99,13 @@ export default function SettingsPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as Tab)}
-                className={`flex items-center gap-2 px-3 md:px-4 py-3 border-b-2 transition-all whitespace-nowrap ${
+                className={`flex items-center gap-2 px-3 md:px-4 py-3 border-b-2 transition-all whitespace-nowrap flex-shrink-0 ${
                   activeTab === tab.id
                     ? "border-[var(--color-accent)] text-[var(--color-accent)]"
                     : "border-transparent text-[var(--color-muted-ink)] hover:text-[var(--color-ink)]"
                 }`}
               >
-                <tab.icon className="w-4 h-4 md:w-5 md:h-5" />
+                <tab.icon className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
                 <span className="font-semibold text-sm md:text-base">
                   {tab.label}
                 </span>

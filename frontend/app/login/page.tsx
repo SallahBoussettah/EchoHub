@@ -147,12 +147,18 @@ export default function LoginPage() {
               </div>
 
               <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex items-center gap-2 cursor-pointer group">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 rounded border-[var(--color-line)] text-[var(--color-accent)] focus:ring-[var(--color-accent)]"
+                    className="w-4 h-4 rounded border-[var(--color-line)] text-[var(--color-accent)] focus:ring-[var(--color-accent)] focus:ring-offset-0 flex-shrink-0"
+                    style={{
+                      width: "16px",
+                      height: "16px",
+                      minWidth: "16px",
+                      minHeight: "16px",
+                    }}
                   />
-                  <span className="text-[var(--color-muted-ink)]">
+                  <span className="text-[var(--color-muted-ink)] text-sm">
                     Remember me
                   </span>
                 </label>
