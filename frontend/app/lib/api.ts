@@ -1,8 +1,22 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
+// Dynamically determine API URL based on current host
+const getApiUrl = () => {
+  if (typeof window !== "undefined") {
+    const hostname = window.location.hostname;
+
+    // If accessing from local network IP, use network IP for backend
+    if (hostname.startsWith("192.168.")) {
+      return `http://${hostname}:3001/api/v1`;
+    }
+  }
+
+  // Default to localhost or environment variable
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
+};
+
+const API_URL = getApiUrl();
 
 export const api = axios.create({
   baseURL: API_URL,
